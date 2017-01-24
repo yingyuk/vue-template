@@ -1,0 +1,24 @@
+{
+  "name": "webpack2",
+  "version": "0.0.1",
+  "description": "",
+  "main": "app/index.js",
+  "scripts": {
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yingyuk/webpack.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yingyuk/webpack/issues"
+  },
+  "homepage": "https://github.com/yingyuk/webpack#readme",
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "webpack": "2.2.0"
+  }
+}

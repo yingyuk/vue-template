@@ -1,0 +1,66 @@
+/*线的颜色*/
+
+$border: #eee;
+$main: #fe3e62;
+$red: #f23365;
+$gray: #b3b3b3;
+$black: #333333;
+@mixin bg-image($url) {
+  background-image: url($url + "@3x.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  /*  @media (-webkit-min-device-pixel-ratio: 3) {
+    background-image: url($url + "@3x.png");
+  }*/
+}
+
+@mixin bg-jpg($url) {
+  background-image: url($url + "@3x.jpg");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  /*  @media (-webkit-min-device-pixel-ratio: 3) {
+    background-image: url($url + "@3x.png");
+  }*/
+}
+
+
+/*ipad 竖屏*/
+
+@mixin ipad() {
+  @media only screen and (device-aspect-ratio: 3/4) and (orientation: portrait) and (min-width: 768px) {
+    @content;
+  }
+}
+
+@mixin center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+
+@mixin hbPlaceholder(){
+  &::-webkit-input-placeholder { /* WebKit browsers */
+    @content;
+  }
+  &:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    @content;
+  }
+  &::-moz-placeholder { /* Mozilla Firefox 19+ */
+    @content;
+  }
+  &:-ms-input-placeholder { /* Internet Explorer 10+ */
+    @content;
+  }
+  //@at-root{
+  //  .ie8,.ie9{
+  //    .placeholder { /* Internet Explorer 9- */
+  //      @content;
+  //    }
+  //  }
+  //}
+}

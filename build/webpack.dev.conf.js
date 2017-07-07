@@ -20,7 +20,7 @@ module.exports = merge(baseWebpackConfig, {
   devtool: '#cheap-module-eval-source-map',
   resolve: {
     alias: {
-      'create-api': path.resolve(__dirname, '../src/config/create.api.dev.js'),
+      'create-api': path.resolve(__dirname, '../src/config/create-api-dev.js'),
     },
   },
   plugins: [
@@ -33,7 +33,7 @@ module.exports = merge(baseWebpackConfig, {
     // https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: 'index.html',
+      template: 'src/index.html',
       inject: true,
     }),
     new FriendlyErrorsPlugin(),

@@ -8,18 +8,10 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 
-const PUBLIC_PATH = 'http://localhost:3000/';
-
-const env = config.build.env;
-
 const webpackConfig = merge(baseWebpackConfig, {
-  entry: {
-    app: './src/entry.prod.js', // 入口文件
-  },
   module: {
     rules: utils.styleLoaders({
       sourceMap: config.build.productionSourceMap,
@@ -28,53 +20,58 @@ const webpackConfig = merge(baseWebpackConfig, {
   },
   devtool: config.build.productionSourceMap ? '#source-map' : false,
   output: {
+    // path: path.resolve(__dirname, '../dist/dll'),
     path: config.build.assetsRoot,
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js'),
+    // library: '[name]_library',
+    library: 'vendor_lib',
+  },
+  performance: {
+    hints: 'warning',
+    maxEntrypointSize: 250 * 1000,
+    maxAssetSize: 100 * 1000,
   },
   resolve: {
     alias: {
-      'create-api': path.resolve(__dirname, '../src/config/create.api.client.js'),
+      'create-api': path.resolve(__dirname, '../src/config/create-api-client.js'),
     },
   },
   // 不打包以下模块
   externals: {
-    // vue: 'Vue',
-    // vuex: 'Vuex',
-    // 'vue-router': 'VueRouter',
+    // vue: 'Vue', // 80k
+    // vuex: 'Vuex', // 20k
+    // 'vue-router': 'VueRouter', // 24k
     // axios: 'axios',
     // 'mint-ui': 'Mint',
     // jquery: 'jQuery',
     // swiper: 'Swiper',
   },
   plugins: [
-    // http://vuejs.github.io/vue-loader/en/workflow/production.html
+    // 定义变量
     new webpack.DefinePlugin({
-      'process.env': env,
+      'process.env': config.build.env,
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false,
-      },
-      sourceMap: true,
-    }),
-    // extract css into its own file
     new ExtractTextPlugin({
       filename: utils.assetsPath('css/[name].[contenthash].css'),
     }),
-    // Compress extracted CSS. We are using this plugin so that possible
-    // duplicated CSS from different components can be deduped.
     new OptimizeCSSPlugin({
       cssProcessorOptions: {
         safe: true,
       },
     }),
-    // generate dist index.html with correct asset hash for caching.
-    // you can customize output by editing /index.html
-    // see https://github.com/ampedandwired/html-webpack-plugin
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false,
+      },
+    }),
+    // new webpack.DllReferencePlugin({
+    //   context: __dirname,
+    //   manifest: path.join(config.build.assetsRoot, "vendor-manifest.json"),
+    // }),
     new HtmlWebpackPlugin({
       filename: config.build.index,
-      template: 'index.html',
+      template: 'src/index.html',
       inject: true,
       minify: {
         removeComments: true,
@@ -86,16 +83,16 @@ const webpackConfig = merge(baseWebpackConfig, {
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency',
     }),
-    new ServiceWorkerWebpackPlugin({
-      entry: path.join(__dirname, '../src/sw.js'),
-      excludes: [
-        '**/.*',
-        '**/icons/**/*.png',
-        '**/*.map',
-        '**/*.json',
-        '*.html',
-      ],
-    }),
+    // new ServiceWorkerWebpackPlugin({
+    //   entry: path.join(__dirname, '../src/sw.js'),
+    //   excludes: [
+    //     '**/.*',
+    //     '**/icons/**/*.png',
+    //     '**/*.map',
+    //     '**/*.json',
+    //     '*.html',
+    //   ],
+    // }),
     // new SWPrecacheWebpackPlugin({
     //   cacheId: 'my-project-name',
     //   filename: 'service-worker.js',
@@ -137,26 +134,6 @@ const webpackConfig = merge(baseWebpackConfig, {
     }]),
     new webpack.optimize.MinChunkSizePlugin({
       minChunkSize: 10, // Minimum number of characters
-    }),
-    new FaviconsWebpackPlugin({
-      logo: `${path.resolve(__dirname, '../favicon.png')}`,
-      prefix: 'icons/[hash]/',
-      emitStats: false,
-      persistentCache: true,
-      inject: true,
-      title: 'vue',
-      icons: {
-        android: true,
-        appleIcon: true,
-        appleStartup: true,
-        coast: false,
-        favicons: true,
-        firefox: false,
-        opengraph: false,
-        twitter: false,
-        yandex: false,
-        windows: false,
-      },
     }),
   ],
 });

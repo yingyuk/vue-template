@@ -20,5 +20,5 @@ export const rem = function () {
       calSize();
     });
   }
-  setFontSize(375*2, 667*2, 768*2, 1024*2);
+  setFontSize(375 * 2, 667 * 2, 768 * 2, 1024 * 2);
 };

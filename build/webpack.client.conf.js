@@ -93,20 +93,21 @@ const webpackConfig = merge(baseWebpackConfig, {
     //     '*.html',
     //   ],
     // }),
-    // new SWPrecacheWebpackPlugin({
-    //   cacheId: 'my-project-name',
-    //   filename: 'service-worker.js',
-    //   // dontCacheBustUrlsMatching: /\.\w{8}\./,
-    //   dontCacheBustUrlsMatching: /./,
-    //   // minify: true,
-    //   navigateFallback: `${PUBLIC_PATH}index.html`,
-    //   mergeStaticsConfig: true,
-    //   staticFileGlobsIgnorePatterns: [/\.map$/],
-    //   // runtimeCaching: [{
-    //   //   urlPattern: '/',
-    //   //   handler: 'networkFirst',
-    //   // }],
-    // }),
+    new SWPrecacheWebpackPlugin({
+      cacheId: 'vue',
+      filename: 'service-worker.js',
+      // dontCacheBustUrlsMatching: /\.\w{8}\./,
+      dontCacheBustUrlsMatching: /./,
+      // minify: true,
+      // navigateFallback: `${PUBLIC_PATH}index.html`,
+      // mergeStaticsConfig: true,
+      staticFileGlobsIgnorePatterns: [/\.map$/],
+      // staticFileGlobsIgnorePatterns: [/\.map$/],
+      // runtimeCaching: [{
+      //   urlPattern: '/',
+      //   handler: 'networkFirst',
+      // }],
+    }),
     // split vendor js into its own file
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
@@ -126,7 +127,6 @@ const webpackConfig = merge(baseWebpackConfig, {
       // minChunks: Infinity,
       chunks: ['vendor'],
     }),
-    // copy custom static assets
     new CopyWebpackPlugin([{
       from: path.resolve(__dirname, '../static'),
       to: config.build.assetsSubDirectory,

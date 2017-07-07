@@ -42,7 +42,7 @@ app.use(compression({ threshold: 0 }))
 app.use(favicon('./dist/static/favicon.png'))
 app.use('/static', serve('./dist/static', true))
 // app.use('/manifest.json', serve('./manifest.json', true))
-// app.use('/service-worker.js', serve('./dist/service-worker.js'))
+app.use('/service-worker.js', serve('./dist/service-worker.js'))
 
 app.get('*', (req, res) => {
   if (!renderer) {

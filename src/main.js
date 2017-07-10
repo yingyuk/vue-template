@@ -4,8 +4,8 @@ import App from './App.vue';
 import store from './store';
 import router from './router';
 import { sync } from 'vuex-router-sync';
-// import * as filters from './filters';
-// import mixins from './mixins';
+import * as filters from './filters';
+import mixins from './mixins';
 
 // import 'swiper';
 // import 'swiper/dist/css/swiper.min.css';
@@ -13,18 +13,16 @@ import { sync } from 'vuex-router-sync';
 // import 'mint-ui';
 // import 'mint-ui/lib/style.min.css';
 
-// import { rem } from './assets/scripts/rem'; 
-// rem();
 
-Vue.config.productionTip = false; 
+Vue.config.productionTip = false;
 
 sync(store, router);
 
-// Object.keys(filters).forEach((key) => {
-//   Vue.filter(key, filters[key]);
-// });
+Object.keys(filters).forEach((key) => {
+  Vue.filter(key, filters[key]);
+});
 
-// Vue.mixin(mixins);
+Vue.mixin(mixins);
 
 const app = new Vue({
   router,

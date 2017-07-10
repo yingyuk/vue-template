@@ -1,6 +1,9 @@
-import {
-  MessageBox,
-} from 'mint-ui';
+import MessageBox from 'mint-ui/lib/message-box'
+import 'mint-ui/lib/message-box/style.css'
+
+// import {
+//   MessageBox,
+// } from 'mint-ui';
 var codeStrategy = {
   400: '错误的请求!',
   401: '未授权!',

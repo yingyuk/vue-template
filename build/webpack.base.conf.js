@@ -11,12 +11,6 @@ function resolve(dir) {
 module.exports = {
   entry: {
     app: ['./src/entry-client.js'], // 入口文件
-    vendor: [
-      'vue',
-      'vue-router',
-      'vuex',
-      'vuex-router-sync',
-    ],
   },
   output: {
     path: config.build.assetsRoot,
@@ -26,7 +20,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
-      vue$: 'vue/dist/vue.esm.js',
+      // vue$: 'vue/dist/vue.esm.js',
       src: resolve('src'),
       node_modules: resolve('node_modules'),
     },

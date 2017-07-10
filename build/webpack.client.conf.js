@@ -10,6 +10,8 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
+
 
 const webpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -20,17 +22,14 @@ const webpackConfig = merge(baseWebpackConfig, {
   },
   devtool: config.build.productionSourceMap ? '#source-map' : false,
   output: {
-    // path: path.resolve(__dirname, '../dist/dll'),
     path: config.build.assetsRoot,
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js'),
-    // library: '[name]_library',
-    library: 'vendor_lib',
   },
   performance: {
     hints: 'warning',
     maxEntrypointSize: 250 * 1000,
-    maxAssetSize: 100 * 1000,
+    maxAssetSize: 150 * 1000,
   },
   resolve: {
     alias: {
@@ -43,7 +42,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     // vuex: 'Vuex', // 20k
     // 'vue-router': 'VueRouter', // 24k
     // axios: 'axios',
-    // 'mint-ui': 'Mint',
+    'mint-ui': 'Mint',
     // jquery: 'jQuery',
     // swiper: 'Swiper',
   },
@@ -52,6 +51,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     new webpack.DefinePlugin({
       'process.env': config.build.env,
     }),
+
     new ExtractTextPlugin({
       filename: utils.assetsPath('css/[name].[contenthash].css'),
     }),
@@ -64,24 +64,6 @@ const webpackConfig = merge(baseWebpackConfig, {
       compress: {
         warnings: false,
       },
-    }),
-    // new webpack.DllReferencePlugin({
-    //   context: __dirname,
-    //   manifest: path.join(config.build.assetsRoot, "vendor-manifest.json"),
-    // }),
-    new HtmlWebpackPlugin({
-      filename: config.build.index,
-      template: 'src/index.html',
-      inject: true,
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true,
-        removeAttributeQuotes: true,
-        // more options:
-        // https://github.com/kangax/html-minifier#options-quick-reference
-      },
-      // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-      chunksSortMode: 'dependency',
     }),
     // new ServiceWorkerWebpackPlugin({
     //   entry: path.join(__dirname, '../src/sw.js'),
@@ -108,11 +90,9 @@ const webpackConfig = merge(baseWebpackConfig, {
       //   handler: 'networkFirst',
       // }],
     }),
-    // split vendor js into its own file
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks(module, count) {
-        // any required modules inside node_modules are extracted to vendor
         return (
           module.resource &&
           /\.js$/.test(module.resource) &&
@@ -120,8 +100,6 @@ const webpackConfig = merge(baseWebpackConfig, {
         );
       },
     }),
-    // extract webpack runtime and module manifest to its own file in order to
-    // prevent vendor hash from being updated whenever app bundle is updated
     new webpack.optimize.CommonsChunkPlugin({
       name: 'manifest',
       // minChunks: Infinity,
@@ -134,6 +112,41 @@ const webpackConfig = merge(baseWebpackConfig, {
     }]),
     new webpack.optimize.MinChunkSizePlugin({
       minChunkSize: 10, // Minimum number of characters
+    }),
+
+
+    // new webpack.DllReferencePlugin({
+    //   context: '.',
+    //   manifest: require('../dist/dll/vendor-manifest.json'),
+    // }),
+    // new webpack.DllReferencePlugin({
+    //   context: '.',
+    //   manifest: require('../dist/dll/vue-manifest.json'),
+    // }),
+    // new AddAssetHtmlPlugin({
+    //   includeSourcemap: false,
+    //   filepath: path.join(config.build.assetsRoot, './dll/vendor.dll.js'),
+    //   publicPath: path.posix.join(config.build.assetsPublicPath, config.build.assetsSubDirectory, 'dll'),
+    //   outputPath: path.posix.join(config.build.assetsSubDirectory, 'dll'),
+    // }),
+    // new AddAssetHtmlPlugin({
+    //   includeSourcemap: false,
+    //   filepath: path.join(config.build.assetsRoot, './dll/vue.dll.js'),
+    //   publicPath: path.posix.join(config.build.assetsPublicPath, config.build.assetsSubDirectory, 'dll'),
+    //   outputPath: path.posix.join(config.build.assetsSubDirectory, 'dll'),
+    // }),
+
+    
+    new HtmlWebpackPlugin({
+      filename: config.build.index,
+      template: 'src/index.html',
+      inject: true,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true,
+      },
+      chunksSortMode: 'dependency',
     }),
   ],
 });

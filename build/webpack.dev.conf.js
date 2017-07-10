@@ -6,6 +6,7 @@ const baseWebpackConfig = require('./webpack.base.conf');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const path = require('path');
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 
 // add hot-reload related code to entry chunks
 Object.keys(baseWebpackConfig.entry).forEach((name) => {
@@ -27,7 +28,26 @@ module.exports = merge(baseWebpackConfig, {
     new webpack.DefinePlugin({
       'process.env': config.dev.env,
     }),
-    // https://github.com/glenjamin/webpack-hot-middleware#installation--usage
+    // new webpack.DllReferencePlugin({
+    //   context: '.',
+    //   manifest: require('../dist/dll/vendor-manifest.json'),
+    // }),
+    // new webpack.DllReferencePlugin({
+    //   context: '.',
+    //   manifest: require('../dist/dll/vue-manifest.json'),
+    // }),
+    // new AddAssetHtmlPlugin({
+    //   includeSourcemap: false,
+    //   filepath: path.join(config.build.assetsRoot, './dll/vendor.dll.js'),
+    //   publicPath: path.posix.join(config.build.assetsPublicPath, config.build.assetsSubDirectory, 'dll'),
+    //   outputPath: path.posix.join(config.build.assetsSubDirectory, 'dll'),
+    // }),
+    // new AddAssetHtmlPlugin({
+    //   includeSourcemap: false,
+    //   filepath: path.join(config.build.assetsRoot, './dll/vue.dll.js'),
+    //   publicPath: path.posix.join(config.build.assetsPublicPath, config.build.assetsSubDirectory, 'dll'),
+    //   outputPath: path.posix.join(config.build.assetsSubDirectory, 'dll'),
+    // }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     // https://github.com/ampedandwired/html-webpack-plugin

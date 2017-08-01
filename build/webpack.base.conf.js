@@ -21,21 +21,22 @@ module.exports = {
     extensions: ['.js', '.vue', '.json'],
     alias: {
       // vue$: 'vue/dist/vue.esm.js',
+      vue: process.env.NODE_ENV === 'production' ? 'vue/dist/vue.min.js' : 'vue/dist/vue.js',
       src: resolve('src'),
       node_modules: resolve('node_modules'),
     },
   },
   module: {
     rules: [{
-        test: require.resolve('jquery'),
-        use: [{
-          loader: 'expose-loader',
-          options: 'jQuery',
-        }, {
-          loader: 'expose-loader',
-          options: '$',
-        }],
-      },
+      test: require.resolve('jquery'),
+      use: [{
+        loader: 'expose-loader',
+        options: 'jQuery',
+      }, {
+        loader: 'expose-loader',
+        options: '$',
+      }],
+    },
       // {
       //   test: /\.(js|vue)$/,
       //   loader: 'eslint-loader',
@@ -45,29 +46,29 @@ module.exports = {
       //     formatter: require('eslint-friendly-formatter')
       //   }
       // },
-      {
-        test: /\.vue$/,
-        loader: 'vue-loader',
-        options: vueLoaderConfig,
-      }, {
-        test: /\.js$/,
-        loader: 'babel-loader',
-        include: [resolve('src'), resolve('test')],
-      }, {
-        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-        loader: 'url-loader',
-        options: {
-          limit: 10000,
-          name: utils.assetsPath('img/[name].[hash:7].[ext]'),
-        },
-      }, {
-        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        loader: 'url-loader',
-        options: {
-          limit: 10000,
-          name: utils.assetsPath('fonts/[name].[hash:7].[ext]'),
-        },
+    {
+      test: /\.vue$/,
+      loader: 'vue-loader',
+      options: vueLoaderConfig,
+    }, {
+      test: /\.js$/,
+      loader: 'babel-loader',
+      include: [resolve('src'), resolve('test')],
+    }, {
+      test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+      loader: 'url-loader',
+      options: {
+        limit: 10000,
+        name: utils.assetsPath('img/[name].[hash:7].[ext]'),
       },
+    }, {
+      test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+      loader: 'url-loader',
+      options: {
+        limit: 10000,
+        name: utils.assetsPath('fonts/[name].[hash:7].[ext]'),
+      },
+    },
     ],
   },
 };

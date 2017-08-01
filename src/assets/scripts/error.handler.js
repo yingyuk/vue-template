@@ -47,7 +47,7 @@ function infoError(response) {
 function codeError(response) {
   const isError = Boolean(response);
   if (isError) {
-    const message = error.message || '错误';
+    const message = response.message || '错误';
     return Promise.reject({ message, type: 'code' });
   }
   return arguments[0];

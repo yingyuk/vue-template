@@ -11,11 +11,14 @@ export default {
   name: 'home',
   mounted() {
     this.fetch({
-      url: '/api',
+      method: 'POST',
+      url: '/api/test',
     });
   },
 };
+
 </script>
 <style lang="scss">
 /*@import '../../assets/styles/mixin.scss';*/
+
 </style>

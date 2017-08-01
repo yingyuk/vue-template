@@ -10,7 +10,9 @@
 export default {
   name: 'home',
   mounted() {
-    // MessageBox.alert('hi');
+    this.fetch({
+      url: '/api',
+    });
   },
 };
 </script>

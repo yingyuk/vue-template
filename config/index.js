@@ -7,7 +7,7 @@ module.exports = {
     index: path.resolve(__dirname, '../dist/index.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: '/cdn/',
     productionSourceMap: false,
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.
@@ -28,11 +28,24 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      firstProxy: {
-        target: 'http://api.google.com/',
+      api: {
+        target: 'http://www.google.com/',
         filter(pathname, req) {
-          const isApi = pathname.indexOf('/api') >= 0;
+          const isApi = pathname.indexOf('/api') == 0;
           const ret = isApi;
+          return ret;
+        },
+        // pathRewrite(path, req) {
+        //   return path.replace('/api', '/');
+        // },
+        changeOrigin: true,
+      },
+      echarts: {
+        target: 'http://echarts.baidu.com',
+        filter(pathname, req) {
+          const isApi = pathname.indexOf('/gallery') == 0;
+          const ret = isApi;
+          console.info('pathname', pathname, ret);
           return ret;
         },
         changeOrigin: true,

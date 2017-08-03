@@ -1,6 +1,8 @@
 <template>
   <article id="home">
     home
+    <input type="text">
+    <div contenteditable="true" @input="inputHandler" v-text="userInput"></div>
   </article>
 </template>
 <script>
@@ -9,16 +11,31 @@
 
 export default {
   name: 'home',
+  data() {
+    return {
+      userInput: '123',
+    };
+  },
+  methods: {
+    inputHandler(e) {
+      console.info(e);
+      this.userInput = e.target.innerText;
+    },
+  },
   mounted() {
-    this.fetch({
-      method: 'POST',
-      url: '/api/test',
-    });
+    // this.fetch({
+    //   method: 'POST',
+    //   url: '/api/test',
+    // });
   },
 };
 
 </script>
 <style lang="scss">
 /*@import '../../assets/styles/mixin.scss';*/
+
+p {
+  outline: none;
+}
 
 </style>

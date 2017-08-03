@@ -48,15 +48,9 @@ Object.keys(proxyTable).forEach((context) => {
   if (typeof options === 'string') {
     options = { target: options };
   }
-  // app.use(proxyMiddleware(options.filter || context, options));
+  app.use(proxyMiddleware(options.filter || context, options));
 });
-app.use('/api', proxyMiddleware({
-  target: proxyTable.firstProxy.target,
-  changeOrigin: true,
-  pathRewrite(path, req) {
-    return path.replace('/api', '/');
-  },
-}));
+
 // handle fallback for HTML5 history API
 app.use(require('connect-history-api-fallback')());
 

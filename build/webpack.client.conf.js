@@ -8,9 +8,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
-const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
-const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
-const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
+// const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 
 
 const webpackConfig = merge(baseWebpackConfig, {
@@ -50,6 +48,8 @@ const webpackConfig = merge(baseWebpackConfig, {
     // 定义变量
     new webpack.DefinePlugin({
       'process.env': config.build.env,
+      DEBUG: config.build.debug,
+      serviceWorker: config.build.serviceWorker,
     }),
 
     new ExtractTextPlugin({
@@ -65,31 +65,8 @@ const webpackConfig = merge(baseWebpackConfig, {
         warnings: false,
       },
     }),
-    // new ServiceWorkerWebpackPlugin({
-    //   entry: path.join(__dirname, '../src/sw.js'),
-    //   excludes: [
-    //     '**/.*',
-    //     '**/icons/**/*.png',
-    //     '**/*.map',
-    //     '**/*.json',
-    //     '*.html',
-    //   ],
-    // }),
-    new SWPrecacheWebpackPlugin({
-      cacheId: 'vue',
-      filename: 'service-worker.js',
-      // dontCacheBustUrlsMatching: /\.\w{8}\./,
-      dontCacheBustUrlsMatching: /./,
-      // minify: true,
-      // navigateFallback: `${PUBLIC_PATH}index.html`,
-      // mergeStaticsConfig: true,
-      staticFileGlobsIgnorePatterns: [/\.map$/],
-      // staticFileGlobsIgnorePatterns: [/\.map$/],
-      // runtimeCaching: [{
-      //   urlPattern: '/',
-      //   handler: 'networkFirst',
-      // }],
-    }),
+
+
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks(module, count) {
@@ -136,7 +113,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     //   outputPath: path.posix.join(config.build.assetsSubDirectory, 'dll'),
     // }),
 
-    
+
     new HtmlWebpackPlugin({
       filename: config.build.index,
       template: 'src/index.html',
@@ -150,6 +127,42 @@ const webpackConfig = merge(baseWebpackConfig, {
     }),
   ],
 });
+
+if (config.build.serviceWorker) {
+  const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
+
+  webpackConfig.plugins.push(
+    new SWPrecacheWebpackPlugin({
+      cacheId: 'vue',
+      filename: 'service-worker.js',
+      // dontCacheBustUrlsMatching: /\.\w{8}\./,
+      dontCacheBustUrlsMatching: /./,
+      // minify: true,
+      // navigateFallback: `${PUBLIC_PATH}index.html`,
+      // mergeStaticsConfig: true,
+      staticFileGlobsIgnorePatterns: [/\.map$/],
+      // staticFileGlobsIgnorePatterns: [/\.map$/],
+      // runtimeCaching: [{
+      //   urlPattern: '/',
+      //   handler: 'networkFirst',
+      // }],
+    }));
+
+  // ...
+
+  // const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
+  // new ServiceWorkerWebpackPlugin({
+  //   entry: path.join(__dirname, '../src/sw.js'),
+  //   excludes: [
+  //     '**/.*',
+  //     '**/icons/**/*.png',
+  //     '**/*.map',
+  //     '**/*.json',
+  //     '*.html',
+  //   ],
+  // }),
+}
+
 
 if (config.build.productionGzip) {
   const CompressionWebpackPlugin = require('compression-webpack-plugin');

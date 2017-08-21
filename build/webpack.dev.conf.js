@@ -27,6 +27,8 @@ module.exports = merge(baseWebpackConfig, {
   plugins: [
     new webpack.DefinePlugin({
       'process.env': config.dev.env,
+      DEBUG: config.dev.debug,
+      SERVICE_WORKER: config.dev.serviceWorker,
     }),
     // new webpack.DllReferencePlugin({
     //   context: '.',

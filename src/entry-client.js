@@ -12,6 +12,7 @@ router.onReady(() => {
   app.$mount('#app');
 });
 
-if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/service-worker.js')
+// 配置文件定义
+if (SERVICE_WORKER && process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/service-worker.js');
 }

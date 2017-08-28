@@ -1,4 +1,12 @@
-require('./check-versions')();
+const path = require('path');
+const clientConfig = require('./webpack.client.conf');
+const serverConfig = require('./webpack.server.conf');
+
+const readFile = (fs, file) => {
+  try {
+    return fs.readFileSync(path.join(clientConfig.output.path, file), 'utf-8');
+  } catch (e) {}
+};
 
 const config = require('../config');
 
@@ -7,7 +15,6 @@ if (!process.env.NODE_ENV) {
 }
 
 const opn = require('opn');
-const path = require('path');
 const express = require('express');
 const webpack = require('webpack');
 const proxyMiddleware = require('http-proxy-middleware');

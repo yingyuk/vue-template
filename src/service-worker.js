@@ -48,15 +48,15 @@ self.addEventListener('activate', (event) => {
     global.caches
       .keys()
       .then(cacheNames => Promise.all(
-          cacheNames.map((cacheName) => {
-            // Delete the caches that are not the current one.
-            if (cacheName.indexOf(CACHE_NAME) === 0) {
-              return null;
-            }
+        cacheNames.map((cacheName) => {
+          // Delete the caches that are not the current one.
+          if (cacheName.indexOf(CACHE_NAME) === 0) {
+            return null;
+          }
 
-            return global.caches.delete(cacheName);
-          }),
-        )),
+          return global.caches.delete(cacheName);
+        }),
+      )),
   );
 });
 

@@ -1,4 +1,4 @@
-import proxyRequest from '../assets/scripts/proxy.request.js';
+import proxyRequest from 'src/api/proxy-request.js';
 
 export default {
   methods: {

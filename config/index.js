@@ -22,7 +22,6 @@ module.exports = {
     bundleAnalyzerReport: process.env.npm_config_report,
     serviceWorker: false,
     debug: false,
-    serviceRender: false,
   },
   dev: {
     env: require('./dev.env'),
@@ -63,4 +62,5 @@ module.exports = {
     // just be aware of this issue when enabling this option.
     cssSourceMap: false,
   },
+  serviceRender: false,
 };

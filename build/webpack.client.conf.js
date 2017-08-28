@@ -31,7 +31,7 @@ const webpackConfig = merge(baseWebpackConfig, {
   },
   resolve: {
     alias: {
-      'create-api': path.resolve(__dirname, '../src/config/create-api-client.js'),
+      'create-api': path.resolve(__dirname, '../src/api/create-api-client.js'),
     },
   },
   // 不打包以下模块
@@ -49,7 +49,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     new webpack.DefinePlugin({
       'process.env': config.build.env,
       DEBUG: config.build.debug,
-      serviceWorker: config.build.serviceWorker,
+      SERVICE_WORKER: config.build.serviceWorker,
     }),
 
     new ExtractTextPlugin({

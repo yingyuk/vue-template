@@ -1,8 +1,4 @@
-import {
-  app,
-  store,
-  router,
-} from './main.js';
+import { app, store, router } from './main.js';
 
 if (window.__INITIAL_STATE__) {
   store.replaceState(window.__INITIAL_STATE__);
@@ -13,6 +9,7 @@ router.onReady(() => {
 });
 
 // 配置文件定义
+// && 'https:' === location.protocol
 if (SERVICE_WORKER && process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
   navigator.serviceWorker.register('/service-worker.js');
 }

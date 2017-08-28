@@ -1,9 +1,10 @@
 process.env.VUE_ENV = 'server';
-const webpack = require('webpack')
-var path = require('path');
-const merge = require('webpack-merge')
+
+const webpack = require('webpack');
+const path = require('path');
+const merge = require('webpack-merge');
 const baseWebpackConfig = require('./webpack.base.conf');
-const VueSSRPlugin = require('vue-ssr-webpack-plugin')
+const VueSSRPlugin = require('vue-ssr-webpack-plugin');
 const config = require('../config');
 const utils = require('./utils');
 
@@ -18,11 +19,11 @@ const webpackConfig = merge(baseWebpackConfig, {
   },
   output: {
     filename: 'server-bundle.js',
-    libraryTarget: 'commonjs2'
+    libraryTarget: 'commonjs2',
   },
   resolve: {
     alias: {
-      'create-api': path.resolve(__dirname, '../src/config/create-api-server.js'),
+      'create-api': path.resolve(__dirname, '../src/api/create-api-server.js'),
     },
   },
   // 所有包从node_modules里读取
@@ -30,9 +31,9 @@ const webpackConfig = merge(baseWebpackConfig, {
   plugins: [
     new webpack.DefinePlugin({
       'process.env': config.build.env,
-      'process.env.VUE_ENV': '"server"'
+      'process.env.VUE_ENV': '"server"',
     }),
-    new VueSSRPlugin()
+    new VueSSRPlugin(),
   ],
 });
 

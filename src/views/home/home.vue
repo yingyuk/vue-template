@@ -18,15 +18,14 @@ export default {
   },
   methods: {
     inputHandler(e) {
-      console.info(e);
       this.userInput = e.target.innerText;
     },
   },
   mounted() {
-    // this.fetch({
-    //   method: 'POST',
-    //   url: '/api/test',
-    // });
+    this.fetch({
+      method: 'POST',
+      url: '/api/test',
+    });
   },
 };
 

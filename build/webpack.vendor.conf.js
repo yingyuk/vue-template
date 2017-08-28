@@ -2,14 +2,8 @@ const path = require('path');
 const utils = require('./utils');
 const webpack = require('webpack');
 const config = require('../config');
-const merge = require('webpack-merge');
-const baseWebpackConfig = require('./webpack.base.conf');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
-const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
-const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 
 const webpackConfig = {
   entry: {
@@ -29,11 +23,11 @@ const webpackConfig = {
   },
   output: {
     path: config.build.assetsRoot,
-    filename: "dll/[name].dll.js",
-    library: "[name]_lib",
+    filename: 'dll/[name].dll.js',
+    library: '[name]_lib',
   },
   resolve: {
-    extensions: ['.js', '.vue', '.json']
+    extensions: ['.js', '.vue', '.json'],
   },
   plugins: [
     new ExtractTextPlugin({
@@ -50,7 +44,7 @@ const webpackConfig = {
       },
     }),
     new webpack.DllPlugin({
-      name: "[name]_lib",
+      name: '[name]_lib',
       path: path.join(__dirname, '../dist/dll', '[name]-manifest.json'),
     }),
   ],

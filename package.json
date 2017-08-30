@@ -16,7 +16,6 @@
   "dependencies": {
     "axios": "^0.16.2",
     "es6-promise": "^4.1.1",
-    "jquery": "^3.2.1",
     "lodash": "^4.17.4",
     "mint-ui": "^2.2.9",
     "store": "^2.0.12",

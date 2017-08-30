@@ -1,8 +1,9 @@
 <template>
   <article id="home">
-    home
-    <input type="text">
+    <h1>home</h1>
+    <router-link :to="{name: 'detail'}">to detail</router-link>
     <div contenteditable="true" @input="inputHandler" v-text="userInput"></div>
+    <input v-model="userInput" type="text">
   </article>
 </template>
 <script>
@@ -13,7 +14,7 @@ export default {
   name: 'home',
   data() {
     return {
-      userInput: '123',
+      userInput: 'test',
     };
   },
   methods: {
@@ -22,17 +23,16 @@ export default {
     },
   },
   mounted() {
-    this.fetch({
-      method: 'POST',
-      url: '/api/test',
-    });
+    // this.fetch({
+    //   method: 'GET',
+    //   url: '/search/repositories?q=javascript&sort=stars',
+    // });
   },
 };
 
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 /*@import '../../assets/styles/mixin.scss';*/
-
 p {
   outline: none;
 }

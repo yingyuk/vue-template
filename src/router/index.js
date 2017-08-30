@@ -3,7 +3,8 @@ import Router from 'vue-router';
 
 Vue.use(Router);
 
-import home from 'src/views/home/home.vue';
+const home = () => import('src/views/home/home.vue');
+const detail = () => import('src/views/detail/detail.vue');
 
 export default new Router({
   mode: 'history', // ['history', 'hash']
@@ -18,6 +19,10 @@ export default new Router({
     path: '/home',
     name: 'home',
     component: home,
+  }, {
+    path: '/detail',
+    name: 'detail',
+    component: detail,
   }, {
     path: '*',
     redirect: {

@@ -6,9 +6,7 @@
   </div>
 </template>
 <script>
-import {
-  rem
-} from './assets/scripts/rem';
+import { rem } from './assets/scripts/rem';
 
 export default {
   name: 'app',
@@ -16,6 +14,7 @@ export default {
     rem();
   },
 };
+
 </script>
 <style lang="scss">
 @import './assets/styles/fonts.css';
@@ -25,4 +24,5 @@ export default {
 [v-cloak] {
   display: none;
 }
+
 </style>

@@ -7,7 +7,7 @@ module.exports = {
     index: path.resolve(__dirname, '../dist/index.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/cdn/',
+    assetsPublicPath: '/', // '/cdn/'
     productionSourceMap: false,
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.
@@ -33,9 +33,9 @@ module.exports = {
     serviceWorker: false,
     proxyTable: {
       api: {
-        target: 'http://www.google.com/',
+        target: 'http://api.github.com',
         filter(pathname, req) {
-          const isApi = pathname.indexOf('/api') == 0;
+          const isApi = pathname.indexOf('/search') == 0;
           const ret = isApi;
           return ret;
         },

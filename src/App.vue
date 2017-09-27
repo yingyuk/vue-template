@@ -17,10 +17,10 @@ export default {
 
 </script>
 <style lang="scss">
-@import './assets/styles/fonts.css';
-@import './assets/styles/reset.scss';
-@import './assets/styles/mixin.scss';
-@import './assets/styles/func.css';
+@import '~src/assets/styles/fonts.css';
+@import '~src/assets/styles/_reset.scss';
+@import '~src/assets/styles/_mixin.scss';
+@import '~src/assets/styles/func.css';
 [v-cloak] {
   display: none;
 }

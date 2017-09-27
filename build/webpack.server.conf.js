@@ -11,12 +11,6 @@ const utils = require('./utils');
 const webpackConfig = merge(baseWebpackConfig, {
   target: 'node',
   entry: './src/entry-server.js',
-  module: {
-    rules: utils.styleLoaders({
-      sourceMap: false,
-      extract: false,
-    }),
-  },
   output: {
     filename: 'server-bundle.js',
     libraryTarget: 'commonjs2',

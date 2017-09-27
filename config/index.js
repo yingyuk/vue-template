@@ -25,7 +25,7 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
-    port: 8080,
+    port: 8765,
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
@@ -49,7 +49,6 @@ module.exports = {
         filter(pathname, req) {
           const isApi = pathname.indexOf('/gallery') == 0;
           const ret = isApi;
-          console.info('pathname', pathname, ret);
           return ret;
         },
         changeOrigin: true,

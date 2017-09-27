@@ -1,7 +1,11 @@
 const path = require('path');
 const utils = require('./utils');
 const config = require('../config');
-const vueLoaderConfig = require('./vue-loader.conf');
+const vueConfig = require('./vue-loader.conf');
+
+const isProd = process.env.NODE_ENV === 'production';
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
 
 function resolve(dir) {
   return path.join(__dirname, '..', dir);
@@ -14,13 +18,13 @@ module.exports = {
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
-    publicPath: process.env.NODE_ENV === 'production' ? config.build.assetsPublicPath : config.dev.assetsPublicPath,
+    publicPath: isProd ? config.build.assetsPublicPath : config.dev.assetsPublicPath,
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
       // vue$: 'vue/dist/vue.esm.js',
-      vue: process.env.NODE_ENV === 'production' ? 'vue/dist/vue.min.js' : 'vue/dist/vue.js',
+      vue: isProd ? 'vue/dist/vue.min.js' : 'vue/dist/vue.js',
       src: resolve('src'),
       node_modules: resolve('node_modules'),
     },
@@ -36,7 +40,7 @@ module.exports = {
           loader: 'expose-loader',
           options: '$',
         }],
-      },*/
+      }, */
       /* {
         test: /\.(js|vue)$/,
         loader: 'eslint-loader',
@@ -45,11 +49,11 @@ module.exports = {
         options: {
           formatter: require('eslint-friendly-formatter')
         }
-      },*/
+      }, */
       {
         test: /\.vue$/,
         loader: 'vue-loader',
-        options: vueLoaderConfig,
+        options: vueConfig,
       }, {
         test: /\.js$/,
         loader: 'babel-loader',
@@ -68,6 +72,24 @@ module.exports = {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]'),
         },
+      }, {
+        test: /\.css$/,
+        use: isProd ?
+          ExtractTextPlugin.extract({
+            use: 'css-loader?minimize',
+            fallback: 'vue-style-loader',
+          }) : ['vue-style-loader', 'css-loader'],
+      }, {
+        test: /\.scss$/,
+        use: isProd ?
+          ExtractTextPlugin.extract({
+            use: [{
+              loader: 'css-loader',
+            }, {
+              loader: 'sass-loader',
+            }],
+            fallback: 'style-loader',
+          }) : ['style-loader', 'css-loader', 'sass-loader'],
       },
     ],
   },

@@ -19,11 +19,16 @@ module.exports = {
       },
     },
   },
+  'globals': {
+    'document': true
+  },
   rules: {
-    'import/extensions': ['error', 'always', {
+    // 没有找到模块
+    'import/extensions': ['off', 'always', {
       js: 'never',
       vue: 'never',
     }],
+    'import/no-unresolved': [0, { commonjs: true, amd: true }],
     // 允许 console warn, error
     'no-console': [
       'error', {
@@ -32,7 +37,6 @@ module.exports = {
     ],
     'linebreak-style': 0, // 回车风格不报错
     indent: ['error', 2], // 缩进2个空格
-    'import/no-unresolved': 0, // 没有找到模块
     'no-unused-expressions': ['error', {
       allowTernary: true,
     }],

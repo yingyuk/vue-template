@@ -4,6 +4,7 @@ const config = require('../config');
 const vueConfig = require('./vue-loader.conf');
 
 const isProd = process.env.NODE_ENV === 'production';
+const isServer = process.env.VUE_ENV === 'server';
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 
@@ -74,14 +75,14 @@ module.exports = {
         },
       }, {
         test: /\.css$/,
-        use: isProd ?
+        use: isProd && !isServer ?
           ExtractTextPlugin.extract({
             use: 'css-loader?minimize',
             fallback: 'vue-style-loader',
           }) : ['vue-style-loader', 'css-loader'],
       }, {
         test: /\.scss$/,
-        use: isProd ?
+        use: isProd && !isServer ?
           ExtractTextPlugin.extract({
             use: [{
               loader: 'css-loader',

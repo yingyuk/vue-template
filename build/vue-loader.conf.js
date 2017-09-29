@@ -1,7 +1,8 @@
 const isProd = process.env.NODE_ENV === 'production';
+const isServer = process.env.VUE_ENV === 'server';
 
 module.exports = {
-  extractCSS: process.env.NODE_ENV === 'production',
+  extractCSS: isProd && !isServer,
   preserveWhitespace: false,
   postcss: [
     require('autoprefixer')({

@@ -30,3 +30,13 @@ export default new Router({
     },
   }],
 });
+
+router.beforeEach((to, from, next) => {
+  // 百度统计
+  let { name, params, query } = to;
+  let { href: pathname } = router.resolve({ name, params, query });
+  if (typeof _hmt !== 'undefined') {
+    _hmt.push(['_trackPageview', pathname]);
+  }
+  next();
+});

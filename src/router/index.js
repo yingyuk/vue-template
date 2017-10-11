@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import setTitle from '../assets/scripts/settitle.js'; // 设置页面标题
 
 Vue.use(Router);
 
@@ -19,10 +20,16 @@ export default new Router({
     path: '/home',
     name: 'home',
     component: home,
+    meta: {
+      title: '首页',
+    },
   }, {
     path: '/detail',
     name: 'detail',
     component: detail,
+    meta: {
+      title: '详情页',
+    },
   }, {
     path: '*',
     redirect: {
@@ -39,4 +46,11 @@ router.beforeEach((to, from, next) => {
     _hmt.push(['_trackPageview', pathname]);
   }
   next();
+});
+
+router.afterEach(function (to) {
+  // 设置页面标题
+  if (to.meta.title) {
+    setTitle(to.meta.title);
+  }
 });

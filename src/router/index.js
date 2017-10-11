@@ -7,7 +7,7 @@ Vue.use(Router);
 const home = () => import('src/views/home/home.vue');
 const detail = () => import('src/views/detail/detail.vue');
 
-export default new Router({
+const router = new Router({
   mode: 'history', // ['history', 'hash']
   linkActiveClass: 'active', // active class 名称
   scrollBehavior(to, from, savedPosition) { // 后退页面时, 保留滚动位置
@@ -54,3 +54,5 @@ router.afterEach(function (to) {
     setTitle(to.meta.title);
   }
 });
+
+export default router;

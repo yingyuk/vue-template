@@ -58,3 +58,11 @@ export function urlParse() {
   }
   return obj;
 }
+
+export function isiOS() {
+  return navigator.userAgent.indexOf('applewebkit') >= 0;
+}
+
+export function isWechat() {
+  return navigator.userAgent.indexOf('MicroMessenger') > -1;
+}

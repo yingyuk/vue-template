@@ -4,12 +4,12 @@ store.addPlugin(expirePlugin);
 
 // 用户标识
 export const getUser = function () {
-  const user = store.get('performance_user_token');
+  const user = store.get('vue_template_user');
   return user || {};
 };
 
-export const setUser = function (token, expiration) {
-  store.set('performance_user_token', token, expiration);
+export const setUser = function (user, expiration) {
+  store.set('vue_template_user', user, expiration);
 };
 
 export const clearUser = function () {

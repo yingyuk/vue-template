@@ -1,4 +1,4 @@
-// import Indicator from 'mint-ui/lib/indicator';
+import Indicator from 'mint-ui/lib/indicator';
 // import 'mint-ui/lib/indicator/style.css';
 
 import request from 'src/api/index';

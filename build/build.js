@@ -8,6 +8,7 @@ const path = require('path');
 const chalk = require('chalk');
 const webpack = require('webpack');
 const config = require('../config');
+const fs = require('fs');
 
 let webpackConfig;
 
@@ -31,7 +32,7 @@ function build(_config, type) {
     webpack(_config, (err, stats) => {
       spinner.stop();
       if (err) {
-        reject(err);
+        return reject(err);
       }
       process.stdout.write(`${stats.toString({
         colors: true,
@@ -46,8 +47,29 @@ function build(_config, type) {
         '  Tip: built files are meant to be served over an HTTP server.\n' +
         '  Opening index.html over file:// won\'t work.\n',
       ));
+      return resolve();
     });
   }));
+}
+
+function description() {
+  // 目的是为了一个仓库里放置多个项目,
+  let { name } = path.parse(process.env.LOCATION); // 根文件夹名
+  let relative = path.relative(process.env.LOCATION, process.cwd()); // 项目文件夹与根文件夹的相对路径
+  let location = path.join(name, relative); // 项目的路径
+
+  let { assetsRoot, assetsSubDirectory } = config.build;
+
+  let filename = 'README.md';
+  let filepath = path.join(assetsRoot, assetsSubDirectory, filename)
+  let info = {
+    name: process.env.npm_package_name,
+    version: process.env.npm_package_version,
+    time: new Date().toLocaleString(),
+    location,
+    domain: '',
+  };
+  fs.writeFileSync(filepath, JSON.stringify(info, null, 2), 'utf-8');
 }
 
 Promise.resolve()
@@ -73,6 +95,11 @@ Promise.resolve()
   .then(() => {
     if (webpackConfig) {
       return build(webpackConfig);
+    }
+  })
+  .then(() => {
+    if (target == 'client') {
+      description();
     }
   })
   .catch((err) => {

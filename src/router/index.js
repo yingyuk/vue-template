@@ -44,13 +44,8 @@ const router = new Router({
 });
 
 router.beforeEach(async (to, from, next) => {
-  const {
-    name, params, query, hash, meta,
-  } = to;
+  const { query, meta } = to;
   // 微信登录
-  const { href: pathname } = router.resolve({
-    name, params, query, hash,
-  });
   const { wechat_code } = query;
   if (wechat_code) { // 刚从微信授权跳转过来
     await fetchWechatToken({ wechat_code });
@@ -59,20 +54,22 @@ router.beforeEach(async (to, from, next) => {
   const { title, requireWechatLogin } = meta;
   if (requireWechatLogin) {
     const force = false;
-    wechatLogin(force, to);
+    await wechatLogin(force, to);
   }
   // 设置标题
   if (title) {
     setTitle(title);
   }
-  if (typeof _hmt !== 'undefined') {
-    _hmt.push(['_trackPageview', pathname]); // 百度统计
-  }
   next();
 });
 
 router.afterEach((route) => {
-  store.commit('closeModal'); // 关闭弹窗
+  const { name, params, query, hash, meta } = route;
+  const { href } = router.resolve({ name, params, query, hash });
+  if (typeof _hmt !== 'undefined') {
+    _hmt.push(['_trackPageview', href]); // 百度统计
+  }
+  store.commit('closeModal');// 关闭弹窗
 });
 
 export default router;

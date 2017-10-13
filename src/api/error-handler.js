@@ -1,10 +1,7 @@
 // import MessageBox from 'mint-ui/lib/message-box';
 // import 'mint-ui/lib/message-box/style.css';
 
-function wecahtRedirect() {
-  const href = window.location.href;
-  window.location.href = `http://wechat.halobear.com/token?back=${decodeURIComponent(href)}`;
-}
+import { wechatLogin } from 'src/assets/scripts/wechat-login';
 
 function serverError(response) {
   const isServerError = response && response.status && response.status !== 200;
@@ -28,7 +25,7 @@ function serverError(response) {
     };
     const message = codeStrategy[status] || '服务器错误!';
     if (status === 401) {
-      wecahtRedirect(); // 微信授权
+      wechatLogin(); // 微信授权
     }
     return Promise.reject({ message, type: 'server' });
   }
@@ -70,8 +67,8 @@ function errorHandler({ message, type }, { alertInfoError, alertServerError }) {
  */
 export default function (response, { alertInfoError, alertServerError }) {
   return Promise.resolve(response)
-    .then(serverError)
     .then(infoError)
+    .then(serverError)
     .then(codeError)
     .catch(data => errorHandler(data, { alertInfoError, alertServerError }));
 }

@@ -34,7 +34,8 @@ const renderer = createBundleRenderer(bundle, {
     maxAge: 1000 * 60 * 15,
   }),
   // this is only needed when vue-server-renderer is npm-linked
-  basedir: resolve(''),
+  // 包地址的引用, https://github.com/vuejs/vue/commit/8d885128371c81994715691c81d161b3768706dd
+  basedir: path.resolve(__dirname),
   // recommended for performance
   runInNewContext: false,
 });

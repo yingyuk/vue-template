@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <img v-lazy=" 'https://www.baidu.com/img/bd_logo1.png' + 'error' " alt="">
     <keep-alive>
       <router-view></router-view>
     </keep-alive>

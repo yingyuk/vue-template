@@ -1,6 +1,3 @@
-import Indicator from 'mint-ui/lib/indicator';
-// import 'mint-ui/lib/indicator/style.css';
-
 import request from 'src/api/index';
 import errorHandler from 'src/api/error-handler.js';
 import { getUser } from 'src/assets/scripts/local-storage.js';

@@ -1,6 +1,8 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 const path = require('path');
 
+const isProd = process.env.NODE_ENV === 'production';
+
 module.exports = {
   build: {
     env: require('./prod.env'),
@@ -43,6 +45,11 @@ module.exports = {
         //   return path.replace('/api', '/');
         // },
         changeOrigin: true,
+        onProxyRes(proxyRes, req, res) {
+          if (!isProd) {
+            proxyRes.headers.target = proxyRes.client._host + proxyRes.client.parser.outgoing.path;
+          }
+        },
       },
       echarts: {
         target: 'http://echarts.baidu.com',
@@ -52,6 +59,11 @@ module.exports = {
           return ret;
         },
         changeOrigin: true,
+        onProxyRes(proxyRes, req, res) {
+          if (!isProd) {
+            proxyRes.headers.target = proxyRes.client._host + proxyRes.client.parser.outgoing.path;
+          }
+        },
       },
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"

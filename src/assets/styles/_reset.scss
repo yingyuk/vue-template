@@ -68,7 +68,8 @@ h6 {
 }
 
 a{
-   all: unset;
+   /*all: unset;*/
+   text-decoration: none;
 }
 
 .scroll-bar-hide {

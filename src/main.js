@@ -7,9 +7,6 @@ import * as filters from './filters';
 import mixins from './mixins';
 import VueLazyload from 'vue-lazyload';
 
-// import 'swiper';
-// import 'swiper/dist/css/swiper.min.css';
-
 Vue.config.productionTip = false;
 
 Vue.use(VueLazyload, {

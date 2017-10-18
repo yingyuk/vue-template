@@ -44,8 +44,8 @@ const webpackConfig = merge(baseWebpackConfig, {
       'process.env': config.build.env,
       DEBUG: config.build.debug,
       SERVICE_WORKER: config.build.serviceWorker,
+      IS_SERVER: false,
     }),
-
     new ExtractTextPlugin({
       filename: utils.assetsPath('css/[name].[contenthash].css'),
     }),

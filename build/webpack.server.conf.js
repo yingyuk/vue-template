@@ -26,6 +26,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     new webpack.DefinePlugin({
       'process.env': config.build.env,
       'process.env.VUE_ENV': '"server"',
+      IS_SERVER: true,
     }),
     new VueSSRPlugin(),
   ],

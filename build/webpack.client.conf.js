@@ -86,7 +86,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     new webpack.optimize.CommonsChunkPlugin({
       name: 'manifest',
       // minChunks: Infinity,
-      chunks: ['vendor'],
+      // chunks: ['vendor'],
     }),
     new CopyWebpackPlugin([{
       from: path.resolve(__dirname, '../static'),
@@ -137,22 +137,27 @@ const webpackConfig = merge(baseWebpackConfig, {
 });
 
 if (config.build.serviceWorker) {
-  const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
+  const SWPrecachePlugin = require('sw-precache-webpack-plugin');
 
-  webpackConfig.plugins.push(new SWPrecacheWebpackPlugin({
-    cacheId: 'vue',
+  webpackConfig.plugins.push(new SWPrecachePlugin({
+    cacheId: 'vue-template',
     filename: 'service-worker.js',
+    minify: true,
     // dontCacheBustUrlsMatching: /\.\w{8}\./,
     dontCacheBustUrlsMatching: /./,
-    // minify: true,
     // navigateFallback: `${PUBLIC_PATH}index.html`,
     // mergeStaticsConfig: true,
-    staticFileGlobsIgnorePatterns: [/\.map$/],
-    // staticFileGlobsIgnorePatterns: [/\.map$/],
-    // runtimeCaching: [{
-    //   urlPattern: '/',
-    //   handler: 'networkFirst',
-    // }],
+    staticFileGlobsIgnorePatterns: [/\.map$/, /\.json$/],
+    runtimeCaching: [
+      {
+        urlPattern: '/',
+        handler: 'networkFirst'
+      },
+      {
+        urlPattern: /\/(home|detail)/,
+        handler: 'networkFirst'
+        },
+      ]
   }));
 
   // ...

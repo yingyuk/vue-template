@@ -1,7 +1,7 @@
 {
   "name": "vue",
   "version": "1.0.0",
-  "description": "webpack vue",
+  "description": "vue template",
   "author": "yingyuk <wuyingyucn@gmail.com>",
   "private": true,
   "scripts": {

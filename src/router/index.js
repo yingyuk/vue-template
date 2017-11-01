@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import store from '../store'; // vuex
-import setTitle from '../assets/scripts/settitle.js'; // 设置页面标题
 import { wechatLogin, fetchWechatToken, deleteUrlWechatCode } from 'src/assets/scripts/wechat-login';
 
 Vue.use(Router);
@@ -55,10 +54,6 @@ router.beforeEach(async (to, from, next) => {
   if (requireWechatLogin) {
     const force = false;
     await wechatLogin(force, to);
-  }
-  // 设置标题
-  if (title) {
-    setTitle(title);
   }
   next();
 });

@@ -12,7 +12,8 @@
     "build:vendor": "cross-env target=vendor node build/build.js ",
     "build:client": "npm run location  cross-env target=client node build/build.js ",
     "build:server": "cross-env target=server node build/build.js ",
-    "lint": "eslint --ext .js,.vue src"
+    "precommit": "npm run lint",
+    "lint": "eslint --ext .js,.vue src --ignore-path .gitignore ."
   },
   "dependencies": {
     "axios": "0.16.2",

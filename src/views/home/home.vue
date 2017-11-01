@@ -19,6 +19,7 @@
 </template>
 <script>
 import 'swiper/dist/css/swiper.min.css';
+
 let Swiper;
 if (!IS_SERVER) {
   Swiper = require('swiper/dist/js/swiper.js');
@@ -32,6 +33,12 @@ export default {
       mySwiper: null,
       pageIndex: 0,
     };
+  },
+  asyncData({ route, store }) {
+    return Promise.resolve();
+  },
+  title() { // 调用的时候绑定了 this
+    return this.user ? this.user.id : '这是首页';
   },
   methods: {
     inputHandler(e) {

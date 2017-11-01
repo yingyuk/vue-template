@@ -128,6 +128,8 @@ const webpackConfig = merge(baseWebpackConfig, {
         removeComments: true,
         collapseWhitespace: true,
         removeAttributeQuotes: true,
+        minifyJS: true,
+        minifyCSS: true,
       },
       chunksSortMode: 'dependency',
     }),

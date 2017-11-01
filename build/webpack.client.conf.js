@@ -9,6 +9,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 // const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 
 const webpackConfig = merge(baseWebpackConfig, {
@@ -54,8 +55,19 @@ const webpackConfig = merge(baseWebpackConfig, {
         safe: true,
       },
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
+    new UglifyJSPlugin({
+      uglifyOptions: {
+        ie8: false,
+        output: {
+          comments: false,
+          beautify: false,
+        },
+        mangle: {
+          keep_fnames: true,
+        },
+        compress: {
+          drop_console: true,
+        },
         warnings: false,
       },
     }),
@@ -125,22 +137,21 @@ const webpackConfig = merge(baseWebpackConfig, {
 if (config.build.serviceWorker) {
   const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 
-  webpackConfig.plugins.push(
-    new SWPrecacheWebpackPlugin({
-      cacheId: 'vue',
-      filename: 'service-worker.js',
-      // dontCacheBustUrlsMatching: /\.\w{8}\./,
-      dontCacheBustUrlsMatching: /./,
-      // minify: true,
-      // navigateFallback: `${PUBLIC_PATH}index.html`,
-      // mergeStaticsConfig: true,
-      staticFileGlobsIgnorePatterns: [/\.map$/],
-      // staticFileGlobsIgnorePatterns: [/\.map$/],
-      // runtimeCaching: [{
-      //   urlPattern: '/',
-      //   handler: 'networkFirst',
-      // }],
-    }));
+  webpackConfig.plugins.push(new SWPrecacheWebpackPlugin({
+    cacheId: 'vue',
+    filename: 'service-worker.js',
+    // dontCacheBustUrlsMatching: /\.\w{8}\./,
+    dontCacheBustUrlsMatching: /./,
+    // minify: true,
+    // navigateFallback: `${PUBLIC_PATH}index.html`,
+    // mergeStaticsConfig: true,
+    staticFileGlobsIgnorePatterns: [/\.map$/],
+    // staticFileGlobsIgnorePatterns: [/\.map$/],
+    // runtimeCaching: [{
+    //   urlPattern: '/',
+    //   handler: 'networkFirst',
+    // }],
+  }));
 
   // ...
 
@@ -161,14 +172,13 @@ if (config.build.serviceWorker) {
 if (config.build.productionGzip) {
   const CompressionWebpackPlugin = require('compression-webpack-plugin');
 
-  webpackConfig.plugins.push(
-    new CompressionWebpackPlugin({
-      asset: '[path].gz[query]',
-      algorithm: 'gzip',
-      test: new RegExp(`\\.(${config.build.productionGzipExtensions.join('|')})$`),
-      threshold: 10240,
-      minRatio: 0.8,
-    }));
+  webpackConfig.plugins.push(new CompressionWebpackPlugin({
+    asset: '[path].gz[query]',
+    algorithm: 'gzip',
+    test: new RegExp(`\\.(${config.build.productionGzipExtensions.join('|')})$`),
+    threshold: 10240,
+    minRatio: 0.8,
+  }));
 }
 
 if (config.build.bundleAnalyzerReport) {

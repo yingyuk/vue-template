@@ -2,10 +2,7 @@ module.exports = {
   root: true,
   extends: 'airbnb-base',
   parser: 'babel-eslint',
-  plugins: [
-    'import',
-    'html',
-  ],
+  plugins: ['import', 'html'],
   parserOptions: {
     sourceType: 'module',
   },
@@ -19,30 +16,44 @@ module.exports = {
       },
     },
   },
-  'globals': {
-    'document': true
+  globals: {
+    document: true,
   },
   rules: {
     // 没有找到模块
-    'import/extensions': ['off', 'always', {
-      js: 'never',
-      vue: 'never',
-    }],
+    'import/extensions': [
+      'off',
+      'always',
+      {
+        js: 'never',
+        vue: 'never',
+      },
+    ],
     'import/no-unresolved': [0, { commonjs: true, amd: true }],
     // 允许 console warn, error
     'no-console': [
-      'error', {
+      'error',
+      {
         allow: ['warn', 'error', 'info'],
       },
     ],
+    'arrow-parens': 0,
     'linebreak-style': 0, // 回车风格不报错
     indent: ['error', 2], // 缩进2个空格
-    'no-unused-expressions': ['error', {
-      allowTernary: true,
-    }],
+    'no-unused-expressions': [
+      'error',
+      {
+        allowTernary: true,
+        allowShortCircuit: true,
+      },
+    ],
+    'global-require': 0,
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
-    'import/no-extraneous-dependencies': ['error', {
-      optionalDependencies: ['test/unit/index.js'],
-    }],
+    'import/no-extraneous-dependencies': [
+      'error',
+      {
+        optionalDependencies: ['test/unit/index.js'],
+      },
+    ],
   },
 };

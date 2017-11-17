@@ -1,15 +1,20 @@
 <template>
   <article id="home">
-    <div ref="container" class="swiper-container" style="height: 100vh">
+    <div ref="container"
+      class="swiper-container"
+      style="height: 100vh">
       <div class="swiper-wrapper">
         <div class="swiper-slide">
           <h1>这是首页</h1>
-          <img v-lazy=" 'https://www.baidu.com/img/bd_logo1.png' + 'error' " alt="">
+          <img v-lazy=" 'https://www.baidu.com/img/bd_logo1.png' + 'error' ">
           <hr>
           <router-link :to="{name: 'detail'}">跳转详情页</router-link>
           <hr>
-          <div contenteditable="true" @input="inputHandler" v-text="userInput"></div>
-          <input v-model="userInput" type="text">
+          <div contenteditable="true"
+            @input="inputHandler"
+            v-text="userInput"></div>
+          <input v-model="userInput"
+            type="text">
         </div>
         <div class="swiper-slide">Slide 2</div>
         <div class="swiper-slide">Slide 3</div>
@@ -24,7 +29,6 @@ let Swiper;
 if (!IS_SERVER) {
   Swiper = require('swiper/dist/js/swiper.js');
 }
-
 export default {
   name: 'home',
   data() {
@@ -37,7 +41,8 @@ export default {
   asyncData({ route, store }) {
     return Promise.resolve();
   },
-  title() { // 调用的时候绑定了 this
+  title() {
+    // 调用的时候绑定了 this
     return this.user ? this.user.id : '这是首页';
   },
   methods: {
@@ -56,10 +61,10 @@ export default {
         hashnavWatchState: true, // 监听地址栏的 hash
         replaceState: true, // 翻页不产生历史记录
         mousewheelControl: true, // 添加鼠标控制
-        onSlideChangeStart: (swiper) => {
+        onSlideChangeStart: swiper => {
           this.pageIndex = swiper.activeIndex;
         },
-        onAfterResize: (swiper) => {
+        onAfterResize: swiper => {
           this.$nextTick(() => {
             this.mySwiper.update(true);
           });
@@ -84,13 +89,10 @@ export default {
     // });
   },
 };
-
 </script>
 <style lang="scss" scoped>
-/*@import '~src/assets/styles/mixin.scss';*/
-
+// @import '~src/assets/styles/mixin.scss';
 p {
   outline: none;
 }
-
 </style>

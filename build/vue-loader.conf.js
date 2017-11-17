@@ -6,10 +6,7 @@ module.exports = {
   preserveWhitespace: false,
   postcss: [
     require('autoprefixer')({
-      browsers: [
-        'iOS >= 7',
-        'Android >= 4.1',
-      ],
+      browsers: ['iOS >= 6', 'Android >= 4.0'],
     }),
   ],
 };

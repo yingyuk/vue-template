@@ -35,33 +35,19 @@ module.exports = {
     serviceWorker: false,
     proxyTable: {
       api: {
-        target: 'http://api.github.com',
+        target: 'http://wfc2017-api.weddingee.com',
         filter(pathname, req) {
-          const isApi = pathname.indexOf('/search') == 0;
-          const ret = isApi;
-          return ret;
+          const isApi = pathname.indexOf('/dev-prefix/api') === 0;
+          return isApi;
         },
-        // pathRewrite(path, req) {
-        //   return path.replace('/api', '/');
-        // },
-        changeOrigin: true,
-        onProxyRes(proxyRes, req, res) {
-          if (!isProd) {
-            proxyRes.headers.target = proxyRes.client._host + proxyRes.client.parser.outgoing.path;
-          }
-        },
-      },
-      echarts: {
-        target: 'http://echarts.baidu.com',
-        filter(pathname, req) {
-          const isApi = pathname.indexOf('/gallery') == 0;
-          const ret = isApi;
-          return ret;
+        pathRewrite(path, req) {
+          return path.replace('/dev-prefix', '/');
         },
         changeOrigin: true,
         onProxyRes(proxyRes, req, res) {
           if (!isProd) {
-            proxyRes.headers.target = proxyRes.client._host + proxyRes.client.parser.outgoing.path;
+            proxyRes.headers.target =
+              proxyRes.client._host + proxyRes.client.parser.outgoing.path;
           }
         },
       },

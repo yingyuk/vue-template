@@ -63,10 +63,8 @@ export function urlParse() {
   return obj;
 }
 
-export function isiOS() {
-  return navigator.userAgent.indexOf('applewebkit') >= 0;
-}
+const userAgent = window.navigator.userAgent.toLowerCase();
 
-export function isWechat() {
-  return navigator.userAgent.indexOf('MicroMessenger') > -1;
-}
+export const isiOS = userAgent.indexOf('applewebkit') >= 0;
+
+export const isWechat = userAgent.indexOf('micromessenger') > -1;

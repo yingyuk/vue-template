@@ -1,8 +1,6 @@
 <template>
   <article id="home">
-    <div ref="container"
-      class="swiper-container"
-      style="height: 100vh">
+    <div ref="container" class="swiper-container" style="height: 100vh">
       <div class="swiper-wrapper">
         <div class="swiper-slide">
           <h1>这是首页</h1>
@@ -10,11 +8,10 @@
           <hr>
           <router-link :to="{name: 'detail'}">跳转详情页</router-link>
           <hr>
-          <div contenteditable="true"
-            @input="inputHandler"
-            v-text="userInput"></div>
-          <input v-model="userInput"
-            type="text">
+          <div contenteditable="true" @input="inputHandler" v-text="userInput"></div>
+          <input v-model="userInput" type="text">
+          <my-video ref="myVideo" :playing.sync="videoPlaying" />
+          <button @click="playVideo">播放视频</button>
         </div>
         <div class="swiper-slide">Slide 2</div>
         <div class="swiper-slide">Slide 3</div>
@@ -23,6 +20,7 @@
   </article>
 </template>
 <script>
+import myVideo from 'src/components/my-video/my-video';
 import 'swiper/dist/css/swiper.min.css';
 
 let Swiper;
@@ -36,6 +34,8 @@ export default {
       userInput: '双击修改数据',
       mySwiper: null,
       pageIndex: 0,
+      // 视频播放状态
+      videoPlaying: false,
     };
   },
   asyncData({ route, store }) {
@@ -80,6 +80,9 @@ export default {
         }
       });
     },
+    playVideo() {
+      this.$refs.myVideo && this.$refs.myVideo.play();
+    },
   },
   mounted() {
     this.updateSwiper();
@@ -87,6 +90,9 @@ export default {
     //   method: 'GET',
     //   url: '/search/repositories?q=javascript&sort=stars',
     // });
+  },
+  components: {
+    myVideo,
   },
 };
 </script>

@@ -1,3 +1,4 @@
+// 设置页面标题
 import { isiOS, isWechat } from 'src/assets/scripts/util';
 
 const isServer = process.env.VUE_ENV === 'server';
@@ -7,10 +8,7 @@ const isServer = process.env.VUE_ENV === 'server';
  */
 function setTitle(title) {
   document.title = title;
-  const userAgent = window.navigator.userAgent.toLowerCase();
-  const iniOS = isiOS();
-  const inWechat = isWechat();
-  if (iniOS && inWechat) {
+  if (isiOS && isWechat) {
     const iframe = document.createElement('iframe');
     iframe.src = '//www.baidu.com/favicon.ico';
     iframe.style.display = 'none';

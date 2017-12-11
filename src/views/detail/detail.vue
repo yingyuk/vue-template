@@ -7,8 +7,14 @@
 <script>
 export default {
   name: 'detail',
+  asyncData({ route, store }) {
+    return Promise.resolve();
+  },
+  title() {
+    return '这是详情页';
+  },
 };
-
 </script>
 <style lang="scss" scoped>
+
 </style>

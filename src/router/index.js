@@ -1,12 +1,12 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+
 import {
   wechatLogin,
   fetchWechatToken,
   deleteUrlWechatCode,
 } from 'src/assets/scripts/wechat-login';
-
-import store from '../store'; // vuex
+import store from 'src/store/index'; // vuex
 
 Vue.use(Router);
 
@@ -28,17 +28,14 @@ const router = new Router({
       path: '/home',
       name: 'home',
       component: home,
-      meta: {
-        title: '首页',
-      },
+      meta: {},
     },
     {
       path: '/detail',
       name: 'detail',
       component: detail,
       meta: {
-        title: '详情页',
-        // requireWechatLogin: true,
+        requireWechatLogin: true,
       },
     },
     {
@@ -60,17 +57,16 @@ router.beforeEach(async (to, from, next) => {
     deleteUrlWechatCode(to);
     return;
   }
-  const { title, requireWechatLogin } = meta;
+  const { requireWechatLogin } = meta;
   if (requireWechatLogin) {
-    const force = false;
-    await wechatLogin(force, to);
+    const forceLogin = false;
+    await wechatLogin(forceLogin, to);
   }
   next();
 });
 
 router.afterEach(route => {
   const { name, params, query, hash } = route;
-
   const { href } = router.resolve({ name, params, query, hash });
   if (typeof _hmt !== 'undefined') {
     _hmt.push(['_trackPageview', href]); // 百度统计

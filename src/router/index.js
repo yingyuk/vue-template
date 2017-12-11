@@ -1,54 +1,64 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import {
+  wechatLogin,
+  fetchWechatToken,
+  deleteUrlWechatCode,
+} from 'src/assets/scripts/wechat-login';
+
 import store from '../store'; // vuex
-import { wechatLogin, fetchWechatToken, deleteUrlWechatCode } from 'src/assets/scripts/wechat-login';
 
 Vue.use(Router);
 
-const home = () =>
-  import('src/views/home/home.vue');
-const detail = () =>
-  import('src/views/detail/detail.vue');
+const home = () => import('src/views/home/home.vue');
+const detail = () => import('src/views/detail/detail.vue');
 
 const router = new Router({
   mode: 'history', // ['history', 'hash']
   linkActiveClass: 'active', // active class 名称
-  scrollBehavior(to, from, savedPosition) { // 后退页面时, 保留滚动位置
+  scrollBehavior(to, from, savedPosition) {
+    // 后退页面时, 保留滚动位置
     if (savedPosition) {
       return savedPosition;
     }
     return { x: 0, y: 0 };
   },
-  routes: [{
-    path: '/home',
-    name: 'home',
-    component: home,
-    meta: {
-      title: '首页',
-    },
-  }, {
-    path: '/detail',
-    name: 'detail',
-    component: detail,
-    meta: {
-      title: '详情页',
-      requireWechatLogin: true,
-    },
-  }, {
-    path: '*',
-    redirect: {
+  routes: [
+    {
+      path: '/home',
       name: 'home',
+      component: home,
+      meta: {
+        title: '首页',
+      },
     },
-  }],
+    {
+      path: '/detail',
+      name: 'detail',
+      component: detail,
+      meta: {
+        title: '详情页',
+        // requireWechatLogin: true,
+      },
+    },
+    {
+      path: '*',
+      redirect: {
+        name: 'home',
+      },
+    },
+  ],
 });
 
 router.beforeEach(async (to, from, next) => {
   const { query, meta } = to;
   // 微信登录
-  const { wechat_code } = query;
-  if (wechat_code) { // 刚从微信授权跳转过来
-    await fetchWechatToken({ wechat_code });
-    return deleteUrlWechatCode(to);
+  const { wechat_code: wechatCode } = query;
+  if (wechatCode) {
+    // 刚从微信授权跳转过来
+    await fetchWechatToken({ wechat_code: wechatCode });
+    deleteUrlWechatCode(to);
+    return;
   }
   const { title, requireWechatLogin } = meta;
   if (requireWechatLogin) {
@@ -58,13 +68,14 @@ router.beforeEach(async (to, from, next) => {
   next();
 });
 
-router.afterEach((route) => {
-  const { name, params, query, hash, meta } = route;
+router.afterEach(route => {
+  const { name, params, query, hash } = route;
+
   const { href } = router.resolve({ name, params, query, hash });
   if (typeof _hmt !== 'undefined') {
     _hmt.push(['_trackPageview', href]); // 百度统计
   }
-  store.commit('closeModal');// 关闭弹窗
+  store.commit('closeModal'); // 切换路由, 关闭弹窗
 });
 
 export default router;

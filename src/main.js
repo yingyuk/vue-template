@@ -1,12 +1,13 @@
 import Vue from 'vue';
+import VueLazyload from 'vue-lazyload';
+import { sync } from 'vuex-router-sync';
+
+import titleMixin from 'src/mixins/title';
 import App from './App.vue';
 import store from './store';
 import router from './router';
-import { sync } from 'vuex-router-sync';
 import * as filters from './filters';
 import mixins from './mixins';
-import VueLazyload from 'vue-lazyload';
-import titleMixin from 'src/mixins/title';
 
 Vue.config.productionTip = false;
 
@@ -19,7 +20,7 @@ Vue.use(VueLazyload, {
 
 sync(store, router);
 
-Object.keys(filters).forEach((key) => {
+Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key]);
 });
 
@@ -31,7 +32,9 @@ Vue.mixin({
       asyncData({
         store: this.$store,
         route: to,
-      }).then(next).catch(next);
+      })
+        .then(next)
+        .catch(next);
     } else {
       next();
     }

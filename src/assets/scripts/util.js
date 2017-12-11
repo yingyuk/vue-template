@@ -1,5 +1,6 @@
 /* global window */
 /* eslint-disable no-restricted-syntax */
+
 function padLeftZero(str) {
   // 填充0
   // 场景: 03 月
@@ -14,7 +15,10 @@ export function formatDate(date, format) {
   }
   if (/(y+)/.test(reply)) {
     // 年份替换
-    reply = reply.replace(RegExp.$1, `${date.getFullYear()}`.substr(4 - RegExp.$1.length));
+    reply = reply.replace(
+      RegExp.$1,
+      `${date.getFullYear()}`.substr(4 - RegExp.$1.length)
+    );
   }
   // 定义 时间替换 格式
   const obj = {
@@ -49,7 +53,7 @@ export function urlParse() {
   // ['?id=123454','&a=b']
 
   if (arr) {
-    arr.forEach((item) => {
+    arr.forEach(item => {
       const tempArr = item.substring(1).split('=');
       const key = decodeURIComponent(tempArr[0]);
       const val = decodeURIComponent(tempArr[1]);

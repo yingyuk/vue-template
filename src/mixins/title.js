@@ -15,7 +15,7 @@ function setTitle(title) {
     iframe.src = '//www.baidu.com/favicon.ico';
     iframe.style.display = 'none';
     document.body.appendChild(iframe);
-    iframe.onload = function () {
+    iframe.onload = () => {
       setTimeout(() => {
         iframe.remove();
       }, 0);
@@ -26,10 +26,9 @@ function setTitle(title) {
 function getTitle(vm) {
   const { title } = vm.$options;
   if (title) {
-    return typeof title === 'function' ?
-      title.call(vm) :
-      title;
+    return typeof title === 'function' ? title.call(vm) : title;
   }
+  return '';
 }
 
 const serverTitleMixin = {
@@ -50,4 +49,4 @@ const clientTitleMixin = {
   },
 };
 
-export default isServer ? serverTitleMixin : clientTitleMixin;
+export default (isServer ? serverTitleMixin : clientTitleMixin);

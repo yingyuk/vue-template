@@ -46,7 +46,7 @@ export function formatDate(date, format) {
  * @return Object {id:12334}
  */
 export function urlParse() {
-  const url = window.location.search || '?id=12345';
+  const url = window.location.search;
   const obj = {};
   const reg = /[?&][^?&]+=[^?&]]+/g;
   const arr = url.match(reg);
@@ -63,7 +63,11 @@ export function urlParse() {
   return obj;
 }
 
-const userAgent = window.navigator.userAgent.toLowerCase();
+let userAgent = '';
+
+if (typeof navigator !== 'undefined') {
+  userAgent = navigator.userAgent.toLowerCase();
+}
 
 export const isiOS = userAgent.indexOf('applewebkit') >= 0;
 

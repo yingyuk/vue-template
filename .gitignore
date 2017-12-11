@@ -1,6 +1,14 @@
 **/.DS_Store
 **/node_modules/
 **/dist/
-**/.idea/
-**/*.log
-**/*.py
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 编辑器 文件夹和文件
+**/.idea
+**/.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln

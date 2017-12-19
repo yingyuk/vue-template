@@ -11,7 +11,6 @@ const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 // const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
-
 const webpackConfig = merge(baseWebpackConfig, {
   devtool: config.build.productionSourceMap ? '#source-map' : false,
   output: {
@@ -72,10 +71,9 @@ const webpackConfig = merge(baseWebpackConfig, {
       },
     }),
 
-
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      minChunks(module, count) {
+      minChunks(module) {
         return (
           module.resource &&
           /\.js$/.test(module.resource) &&
@@ -88,15 +86,16 @@ const webpackConfig = merge(baseWebpackConfig, {
       // minChunks: Infinity,
       // chunks: ['vendor'],
     }),
-    new CopyWebpackPlugin([{
-      from: path.resolve(__dirname, '../static'),
-      to: config.build.assetsSubDirectory,
-      ignore: ['.*'],
-    }]),
+    new CopyWebpackPlugin([
+      {
+        from: path.resolve(__dirname, '../static'),
+        to: config.build.assetsSubDirectory,
+        ignore: ['.*'],
+      },
+    ]),
     new webpack.optimize.MinChunkSizePlugin({
       minChunkSize: 10, // Minimum number of characters
     }),
-
 
     // new webpack.DllReferencePlugin({
     //   context: '.',
@@ -109,16 +108,23 @@ const webpackConfig = merge(baseWebpackConfig, {
     // new AddAssetHtmlPlugin({
     //   includeSourcemap: false,
     //   filepath: path.join(config.build.assetsRoot, './dll/vendor.dll.js'),
-    //   publicPath: path.posix.join(config.build.assetsPublicPath, config.build.assetsSubDirectory, 'dll'),
+    //   publicPath: path.posix.join(
+    //     config.build.assetsPublicPath,
+    //     config.build.assetsSubDirectory,
+    //     'dll'
+    //   ),
     //   outputPath: path.posix.join(config.build.assetsSubDirectory, 'dll'),
     // }),
     // new AddAssetHtmlPlugin({
     //   includeSourcemap: false,
     //   filepath: path.join(config.build.assetsRoot, './dll/vue.dll.js'),
-    //   publicPath: path.posix.join(config.build.assetsPublicPath, config.build.assetsSubDirectory, 'dll'),
+    //   publicPath: path.posix.join(
+    //     config.build.assetsPublicPath,
+    //     config.build.assetsSubDirectory,
+    //     'dll'
+    //   ),
     //   outputPath: path.posix.join(config.build.assetsSubDirectory, 'dll'),
     // }),
-
 
     new HtmlWebpackPlugin({
       filename: config.build.index,
@@ -139,26 +145,28 @@ const webpackConfig = merge(baseWebpackConfig, {
 if (config.build.serviceWorker) {
   const SWPrecachePlugin = require('sw-precache-webpack-plugin');
 
-  webpackConfig.plugins.push(new SWPrecachePlugin({
-    cacheId: 'vue-template',
-    filename: 'service-worker.js',
-    minify: true,
-    // dontCacheBustUrlsMatching: /\.\w{8}\./,
-    dontCacheBustUrlsMatching: /./,
-    // navigateFallback: `${PUBLIC_PATH}index.html`,
-    // mergeStaticsConfig: true,
-    staticFileGlobsIgnorePatterns: [/\.map$/, /\.json$/],
-    runtimeCaching: [
-      {
-        urlPattern: '/',
-        handler: 'networkFirst'
-      },
-      {
-        urlPattern: /\/(home|detail)/,
-        handler: 'networkFirst'
+  webpackConfig.plugins.push(
+    new SWPrecachePlugin({
+      cacheId: 'vue-template',
+      filename: 'service-worker.js',
+      minify: true,
+      // dontCacheBustUrlsMatching: /\.\w{8}\./,
+      dontCacheBustUrlsMatching: /./,
+      // navigateFallback: `${PUBLIC_PATH}index.html`,
+      // mergeStaticsConfig: true,
+      staticFileGlobsIgnorePatterns: [/\.map$/, /\.json$/],
+      runtimeCaching: [
+        {
+          urlPattern: '/',
+          handler: 'networkFirst',
         },
-      ]
-  }));
+        {
+          urlPattern: /\/(home|detail)/,
+          handler: 'networkFirst',
+        },
+      ],
+    })
+  );
 
   // ...
 
@@ -175,21 +183,20 @@ if (config.build.serviceWorker) {
   // }),
 }
 
+// if (config.build.productionGzip) {
+//   const CompressionWebpackPlugin = require('compression-webpack-plugin');
 
-if (config.build.productionGzip) {
-  const CompressionWebpackPlugin = require('compression-webpack-plugin');
-
-  webpackConfig.plugins.push(new CompressionWebpackPlugin({
-    asset: '[path].gz[query]',
-    algorithm: 'gzip',
-    test: new RegExp(`\\.(${config.build.productionGzipExtensions.join('|')})$`),
-    threshold: 10240,
-    minRatio: 0.8,
-  }));
-}
+//   webpackConfig.plugins.push(new CompressionWebpackPlugin({
+//     asset: '[path].gz[query]',
+//     algorithm: 'gzip',
+//     test: new RegExp(`\\.(${config.build.productionGzipExtensions.join('|')})$`),
+//     threshold: 10240,
+//     minRatio: 0.8,
+//   }));
+// }
 
 if (config.build.bundleAnalyzerReport) {
-  const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+  const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
   webpackConfig.plugins.push(new BundleAnalyzerPlugin());
 }
 

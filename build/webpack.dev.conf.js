@@ -1,4 +1,4 @@
-const utils = require('./utils');
+// const utils = require('./utils');
 const webpack = require('webpack');
 const config = require('../config');
 const merge = require('webpack-merge');
@@ -9,8 +9,10 @@ const path = require('path');
 // const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 
 // add hot-reload related code to entry chunks
-Object.keys(baseWebpackConfig.entry).forEach((name) => {
-  baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name]);
+Object.keys(baseWebpackConfig.entry).forEach(name => {
+  baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(
+    baseWebpackConfig.entry[name]
+  );
 });
 
 module.exports = merge(baseWebpackConfig, {
@@ -39,13 +41,21 @@ module.exports = merge(baseWebpackConfig, {
     // new AddAssetHtmlPlugin({
     //   includeSourcemap: false,
     //   filepath: path.join(config.build.assetsRoot, './dll/vendor.dll.js'),
-    //   publicPath: path.posix.join(config.build.assetsPublicPath, config.build.assetsSubDirectory, 'dll'),
+    //   publicPath: path.posix.join(
+    //     config.build.assetsPublicPath,
+    //     config.build.assetsSubDirectory,
+    //     'dll'
+    //   ),
     //   outputPath: path.posix.join(config.build.assetsSubDirectory, 'dll'),
     // }),
     // new AddAssetHtmlPlugin({
     //   includeSourcemap: false,
     //   filepath: path.join(config.build.assetsRoot, './dll/vue.dll.js'),
-    //   publicPath: path.posix.join(config.build.assetsPublicPath, config.build.assetsSubDirectory, 'dll'),
+    //   publicPath: path.posix.join(
+    //     config.build.assetsPublicPath,
+    //     config.build.assetsSubDirectory,
+    //     'dll'
+    //   ),
     //   outputPath: path.posix.join(config.build.assetsSubDirectory, 'dll'),
     // }),
     new webpack.HotModuleReplacementPlugin(),

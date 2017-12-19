@@ -36,16 +36,17 @@ module.exports = {
     proxyTable: {
       api: {
         target: 'http://wfc2017-api.weddingee.com',
-        filter(pathname, req) {
+        filter(pathname) {
           const isApi = pathname.indexOf('/dev-prefix/api') === 0;
           return isApi;
         },
-        pathRewrite(path, req) {
-          return path.replace('/dev-prefix', '/');
+        pathRewrite(uri) {
+          return uri.replace('/dev-prefix', '/');
         },
         changeOrigin: true,
-        onProxyRes(proxyRes, req, res) {
+        onProxyRes(proxyRes) {
           if (!isProd) {
+            /* eslint no-underscore-dangle: 0 */
             proxyRes.headers.target =
               proxyRes.client._host + proxyRes.client.parser.outgoing.path;
           }

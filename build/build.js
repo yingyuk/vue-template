@@ -12,11 +12,11 @@ const fs = require('fs');
 
 let webpackConfig;
 
-const target = process.env.target;
+const { target } = process.env;
 
 function remove(_path) {
   return new Promise((resolve, reject) => {
-    rm(_path, (err) => {
+    rm(_path, err => {
       if (err) {
         return reject(err);
       }
@@ -25,44 +25,48 @@ function remove(_path) {
   });
 }
 
-function build(_config, type) {
+function build(_config) {
   const spinner = ora(`building for ${target}...`);
   spinner.start();
-  return new Promise(((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     webpack(_config, (err, stats) => {
       spinner.stop();
       if (err) {
         return reject(err);
       }
-      process.stdout.write(`${stats.toString({
-        colors: true,
-        modules: false,
-        children: false,
-        chunks: false,
-        chunkModules: false,
-      })}\n\n`);
+      process.stdout.write(
+        `${stats.toString({
+          colors: true,
+          modules: false,
+          children: false,
+          chunks: false,
+          chunkModules: false,
+        })}\n\n`
+      );
 
-      console.log(chalk.cyan('  Build complete.\n'));
-      console.log(chalk.yellow(
-        '  Tip: built files are meant to be served over an HTTP server.\n' +
-        '  Opening index.html over file:// won\'t work.\n',
-      ));
+      console.info(chalk.cyan('  Build complete.\n'));
+      console.info(
+        chalk.yellow(
+          '  Tip: built files are meant to be served over an HTTP server.\n' +
+            "  Opening index.html over file:// won't work.\n"
+        )
+      );
       return resolve();
     });
-  }));
+  });
 }
 
 function description() {
   // 目的是为了一个仓库里放置多个项目,
-  let { name } = path.parse(process.env.LOCATION); // 根文件夹名
-  let relative = path.relative(process.env.LOCATION, process.cwd()); // 项目文件夹与根文件夹的相对路径
-  let location = path.join(name, relative); // 项目的路径
+  const { name } = path.parse(process.env.LOCATION); // 根文件夹名
+  const relative = path.relative(process.env.LOCATION, process.cwd()); // 项目文件夹与根文件夹的相对路径
+  const location = path.join(name, relative); // 项目的路径
 
-  let { assetsRoot, assetsSubDirectory } = config.build;
+  const { assetsRoot, assetsSubDirectory } = config.build;
 
-  let filename = 'README.md';
-  let filepath = path.join(assetsRoot, assetsSubDirectory, filename)
-  let info = {
+  const filename = 'README.md';
+  const filepath = path.join(assetsRoot, assetsSubDirectory, filename);
+  const info = {
     name: process.env.npm_package_name,
     version: process.env.npm_package_version,
     time: new Date().toLocaleString(),
@@ -74,34 +78,38 @@ function description() {
 
 Promise.resolve()
   .then(() => {
-    if (target == 'vendor') {
+    if (target === 'vendor') {
       webpackConfig = require('./webpack.vendor.conf');
-      return remove(path.join(config.build.assetsRoot));
-    } else if (target == 'server') {
+      remove(path.join(config.build.assetsRoot));
+      return;
+    } else if (target === 'server') {
       webpackConfig = require('./webpack.server.conf');
-    } else if (target == 'client') {
+      return;
+    } else if (target === 'client') {
       webpackConfig = require('./webpack.client.conf');
-      return remove(path.join(config.build.assetsRoot, config.build.assetsSubDirectory));
-    } else {
-      console.info(
-        '请输入要打包的类型: \n' +
+      remove(
+        path.join(config.build.assetsRoot, config.build.assetsSubDirectory)
+      );
+      return;
+    }
+    console.info(
+      '请输入要打包的类型: \n' +
         '  服务器渲染打包:  npm run build:server\n' +
         '  浏览器渲染打包:  npm run build:client\n' +
         '  服务器 + 浏览器: npm run build\n' +
-        '  提取依赖库打包:  npm run build:vendor\n',
-      );
-    }
+        '  提取依赖库打包:  npm run build:vendor\n'
+    );
   })
   .then(() => {
     if (webpackConfig) {
-      return build(webpackConfig);
+      build(webpackConfig);
     }
   })
   .then(() => {
-    if (target == 'client') {
+    if (target === 'client') {
       description();
     }
   })
-  .catch((err) => {
+  .catch(err => {
     throw err;
   });

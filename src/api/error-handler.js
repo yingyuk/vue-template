@@ -6,7 +6,7 @@ import { wechatLogin } from 'src/assets/scripts/wechat-login';
 function serverError(response) {
   const isServerError = response && response.status && response.status !== 200;
   if (isServerError) {
-    const status = response.status;
+    const { status } = response;
     const codeStrategy = {
       400: '错误的请求!',
       401: '未授权!',
@@ -27,27 +27,34 @@ function serverError(response) {
     if (status === 401) {
       wechatLogin(); // 微信授权
     }
-    return Promise.reject({ message, type: 'server' });
+    const error = new Error(message);
+    error.type = 'server';
+    return Promise.reject(error);
   }
-  return arguments[0];
+  return response;
 }
 
 function infoError(response) {
-  const isUserError = response && response.data && response.data.iRet !== 1 && response.data.info;
+  const isUserError =
+    response && response.data && response.data.iRet !== 1 && response.data.info;
   if (isUserError) {
     const message = response.data.info;
-    return Promise.reject({ message, type: 'info' });
+    const error = new Error(message);
+    error.type = 'info';
+    return Promise.reject(error);
   }
-  return arguments[0];
+  return response;
 }
 
 function codeError(response) {
   const isError = Boolean(response);
   if (isError) {
     const message = response.message || '错误';
-    return Promise.reject({ message, type: 'code' });
+    const error = new Error(message);
+    error.type = 'code';
+    return Promise.reject(error);
   }
-  return arguments[0];
+  return response;
 }
 
 function errorHandler({ message, type }, { alertInfoError, alertServerError }) {
@@ -65,10 +72,9 @@ function errorHandler({ message, type }, { alertInfoError, alertServerError }) {
  * @param  { Object} error      错误
  * @param  { Boolean} alertError 是否弹出错误
  */
-export default function (response, { alertInfoError, alertServerError }) {
-  return Promise.resolve(response)
+export default (response, { alertInfoError, alertServerError }) =>
+  Promise.resolve(response)
     .then(infoError)
     .then(serverError)
     .then(codeError)
     .catch(data => errorHandler(data, { alertInfoError, alertServerError }));
-}

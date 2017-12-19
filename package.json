@@ -12,8 +12,9 @@
     "build:vendor": "cross-env target=vendor node build/build.js ",
     "build:client": "npm run location  cross-env target=client node build/build.js ",
     "build:server": "cross-env target=server node build/build.js ",
-    "precommit": "npm run lint",
-    "lint": "eslint --ext .js,.vue src --ignore-path .gitignore ."
+    "precommit": "lint-staged",
+    "lint": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
+    "cz": "git-cz"
   },
   "dependencies": {
     "axios": "^0.17.1",
@@ -39,11 +40,13 @@
     "babel-preset-stage-2": "^6.24.1",
     "babel-register": "^6.26.0",
     "chalk": "^2.2.0",
+    "commitizen": "^2.9.6",
     "compression": "^1.7.1",
     "connect-history-api-fallback": "^1.4.0",
     "copy-webpack-plugin": "^4.1.1",
     "cross-env": "^5.1.0",
     "css-loader": "^0.28.7",
+    "cz-conventional-changelog": "^2.1.0",
     "eslint": "^4.9.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-friendly-formatter": "^3.0.0",
@@ -60,7 +63,10 @@
     "friendly-errors-webpack-plugin": "^1.6.1",
     "html-webpack-plugin": "^2.30.1",
     "http-proxy-middleware": "^0.17.4",
+    "husky": "^0.14.3",
     "ip": "^1.1.5",
+    "lint-staged": "^6.0.0",
+    "lru-cache": "^4.1.1",
     "node-sass": "^4.5.3",
     "opn": "^5.1.0",
     "optimize-css-assets-webpack-plugin": "^3.2.0",
@@ -88,5 +94,16 @@
   "engines": {
     "node": ">= 4.0.0",
     "npm": ">= 3.0.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "lint-staged": {
+    "*.{js,vue}": [
+      "npm run lint",
+      "git add"
+    ]
   }
 }

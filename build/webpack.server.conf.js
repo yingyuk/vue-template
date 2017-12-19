@@ -6,7 +6,7 @@ const merge = require('webpack-merge');
 const baseWebpackConfig = require('./webpack.base.conf');
 const VueSSRPlugin = require('vue-ssr-webpack-plugin');
 const config = require('../config');
-const utils = require('./utils');
+// const utils = require('./utils');
 
 const webpackConfig = merge(baseWebpackConfig, {
   target: 'node',

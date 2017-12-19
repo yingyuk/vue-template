@@ -24,7 +24,7 @@ const mutations = {
 
 // 逻辑响应
 const actions = {
-  toggleModal({ state, rootState, commit, dispatch, getters }, payload) {
+  toggleModal({ commit }, payload) {
     commit('setModalState', payload);
   },
 };

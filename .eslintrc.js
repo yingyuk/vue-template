@@ -22,7 +22,11 @@ module.exports = {
   },
   globals: {
     document: true,
-    _hmt: true,
+    _hmt: true, // 百度统计
+    IS_SERVER: true, // 是否是服务器渲染环境
+    MessageBox: true,
+    SERVICE_WORKER: true,
+    Indicator: true,
   },
   rules: {
     // 没有找到模块
@@ -79,5 +83,6 @@ module.exports = {
         functions: 'ignore',
       },
     ],
+    'function-paren-newline': OFF,
   },
 };

@@ -7,11 +7,14 @@ import {
   deleteUrlWechatCode,
 } from 'src/assets/scripts/wechat-login';
 import store from 'src/store/index'; // vuex
+import { saveLog } from 'src/assets/scripts/local-storage';
 
 Vue.use(Router);
 
 const home = () => import('src/views/home/home.vue');
 const detail = () => import('src/views/detail/detail.vue');
+const log = () => import('src/views/log/log.vue');
+const error404 = () => import('src/views/error/404.vue');
 
 const router = new Router({
   mode: 'history', // ['history', 'hash']
@@ -37,6 +40,16 @@ const router = new Router({
       meta: {
         requireWechatLogin: true,
       },
+    },
+    {
+      path: '/log',
+      name: 'log',
+      component: log,
+    },
+    {
+      path: '/404',
+      name: 'error404',
+      component: error404,
     },
     {
       path: '*',
@@ -71,6 +84,7 @@ router.afterEach(route => {
   if (typeof _hmt !== 'undefined') {
     _hmt.push(['_trackPageview', href]); // 百度统计
   }
+  saveLog(`进入${name}页面`);
   store.commit('closeModal'); // 切换路由, 关闭弹窗
 });
 

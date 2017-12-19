@@ -1,12 +1,12 @@
 const path = require('path');
-const clientConfig = require('./webpack.client.conf');
-const serverConfig = require('./webpack.server.conf');
+// const clientConfig = require('./webpack.client.conf');
+// const serverConfig = require('./webpack.server.conf');
 
-const readFile = (fs, file) => {
-  try {
-    return fs.readFileSync(path.join(clientConfig.output.path, file), 'utf-8');
-  } catch (e) {}
-};
+// const readFile = (fs, file) => {
+//   try {
+//     return fs.readFileSync(path.join(clientConfig.output.path, file), 'utf-8');
+//   } catch (e) {}
+// };
 
 const config = require('../config');
 
@@ -28,7 +28,7 @@ const port = process.env.PORT || config.dev.port;
 const autoOpenBrowser = !!config.dev.autoOpenBrowser;
 // Define HTTP proxies to your custom API backend
 // https://github.com/chimurai/http-proxy-middleware
-const proxyTable = config.dev.proxyTable;
+const { proxyTable } = config.dev;
 
 const app = express();
 const compiler = webpack(webpackConfig);
@@ -42,7 +42,7 @@ const hotMiddleware = require('webpack-hot-middleware')(compiler, {
   log: () => {},
 });
 // force page reload when html-webpack-plugin template changes
-compiler.plugin('compilation', (compilation) => {
+compiler.plugin('compilation', compilation => {
   compilation.plugin('html-webpack-plugin-after-emit', (data, cb) => {
     hotMiddleware.publish({ action: 'reload' });
     cb();
@@ -50,7 +50,7 @@ compiler.plugin('compilation', (compilation) => {
 });
 
 // proxy api requests
-Object.keys(proxyTable).forEach((context) => {
+Object.keys(proxyTable).forEach(context => {
   let options = proxyTable[context];
   if (typeof options === 'string') {
     options = { target: options };
@@ -69,24 +69,27 @@ app.use(devMiddleware);
 app.use(hotMiddleware);
 
 // serve pure static assets
-const staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory);
+const staticPath = path.posix.join(
+  config.dev.assetsPublicPath,
+  config.dev.assetsSubDirectory
+);
 app.use(staticPath, express.static('./static'));
 
 const uri = `http://${IP}:${port}`;
 
-let _resolve;
-const readyPromise = new Promise((resolve) => {
-  _resolve = resolve;
+let resolve;
+const readyPromise = new Promise(innerResolve => {
+  resolve = innerResolve;
 });
 
-console.log('> Starting dev server...');
+console.info('> Starting dev server...');
 devMiddleware.waitUntilValid(() => {
-  console.log(`> Listening at ${uri}\n`);
+  console.info(`> Listening at ${uri}\n`);
   // when env is testing, don't need open it
   if (autoOpenBrowser && process.env.NODE_ENV !== 'testing') {
     opn(uri);
   }
-  _resolve();
+  resolve();
 });
 
 const server = app.listen(port);

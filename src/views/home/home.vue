@@ -2,7 +2,7 @@
   <article id="home">
     <div ref="container" class="swiper-container" style="height: 100vh">
       <div class="swiper-wrapper">
-        <div class="swiper-slide">
+        <div class="swiper-slide" data-hash="page1">
           <h1>这是首页</h1>
           <img v-lazy=" 'https://www.baidu.com/img/bd_logo1.png' + 'error' ">
           <hr>
@@ -13,8 +13,8 @@
           <my-video ref="myVideo" :playing.sync="videoPlaying" />
           <button @click="playVideo">播放视频</button>
         </div>
-        <div class="swiper-slide">Slide 2</div>
-        <div class="swiper-slide">Slide 3</div>
+        <div class="swiper-slide" data-hash="page2">Slide 2</div>
+        <div class="swiper-slide" data-hash="page3">Slide 3</div>
       </div>
     </div>
   </article>
@@ -22,11 +22,8 @@
 <script>
 import myVideo from 'src/components/my-video/my-video';
 import 'swiper/dist/css/swiper.min.css';
+import Swiper from 'swiper';
 
-let Swiper;
-if (!IS_SERVER) {
-  Swiper = require('swiper/dist/js/swiper.js');
-}
 export default {
   name: 'home',
   data() {
@@ -38,7 +35,7 @@ export default {
       videoPlaying: false,
     };
   },
-  asyncData({ route, store }) {
+  asyncData(/* { route, store } */) {
     return Promise.resolve();
   },
   title() {
@@ -54,22 +51,28 @@ export default {
       this.buildSwiper();
     },
     buildSwiper() {
-      const $container = this.$refs.container; // 容器
-      this.mySwiper = new Swiper($container, {
+      const vm = this;
+      const { container } = this.$refs; // 容器
+      const config = {
         direction: 'vertical', // 垂直滚动
-        hashnav: true, // 使用 hash
-        hashnavWatchState: true, // 监听地址栏的 hash
-        replaceState: true, // 翻页不产生历史记录
-        mousewheelControl: true, // 添加鼠标控制
-        onSlideChangeStart: swiper => {
-          this.pageIndex = swiper.activeIndex;
+        initialSlide: 0,
+        // 注意不要跟 vue-router 的 hash 模式冲突了, 两者不可共用
+        hashNavigation: {
+          replaceState: true, // 翻页不产生历史记录
         },
-        onAfterResize: swiper => {
-          this.$nextTick(() => {
-            this.mySwiper.update(true);
-          });
+        on: {
+          slideChange() {
+            // 在 vue 中存储状态
+            vm.$set(vm, 'pageIndex', this.realIndex);
+          },
+          resize() {
+            vm.$nextTick(() => {
+              vm.mySwiper.update(true);
+            });
+          },
         },
-      });
+      };
+      this.mySwiper = new Swiper(container, config);
     },
     updateSwiper() {
       this.$nextTick(() => {

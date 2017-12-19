@@ -7,7 +7,7 @@
 <script>
 export default {
   name: 'detail',
-  asyncData({ route, store }) {
+  asyncData(/* { route, store } */) {
     return Promise.resolve();
   },
   title() {

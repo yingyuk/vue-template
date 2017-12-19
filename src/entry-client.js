@@ -11,6 +11,7 @@ window.Indicator = Indicator;
 
 const { app, store, router } = require('./main.js'); // 使用 require, 确保在 MessageBox 加载完之后
 
+/* eslint no-underscore-dangle: 0 */
 if (window.__INITIAL_STATE__) {
   store.replaceState(window.__INITIAL_STATE__);
 }
@@ -19,8 +20,10 @@ router.onReady(() => {
   app.$mount('#app');
 });
 
-// 配置文件定义
-// && 'https:' === location.protocol
-if (SERVICE_WORKER && process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
+const serviceWorkerRegister =
+  SERVICE_WORKER &&
+  window.location.protocol === 'https:' &&
+  'serviceWorker' in navigator;
+if (serviceWorkerRegister) {
   navigator.serviceWorker.register('/service-worker.js');
 }

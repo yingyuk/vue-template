@@ -10,10 +10,11 @@
     "location": "cross-env LOCATION=\"$(git rev-parse --show-toplevel)\" ",
     "build": "npm run build:client && npm run build:server",
     "build:vendor": "cross-env target=vendor node build/build.js ",
-    "build:client": "npm run location  cross-env target=client node build/build.js ",
+    "build:client":
+      "npm run location  cross-env target=client node build/build.js ",
     "build:server": "cross-env target=server node build/build.js ",
     "precommit": "lint-staged",
-    "lint": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
+    "lint": "eslint --fix --ext .js,.vue --ignore-path .eslintignore .",
     "cz": "git-cz"
   },
   "dependencies": {
@@ -101,9 +102,6 @@
     }
   },
   "lint-staged": {
-    "*.{js,vue}": [
-      "npm run lint",
-      "git add"
-    ]
+    "*.{js,vue}": ["npm run lint", "git add"]
   }
 }

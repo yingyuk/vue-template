@@ -34,8 +34,28 @@ module.exports = {
     debug: true,
     serviceWorker: false,
     proxyTable: {
+      github: {
+        // 注意是否是 https
+        target: 'https://api.github.com',
+        filter(pathname) {
+          const isApi = pathname.indexOf('/dev-prefix/search') === 0;
+          return isApi;
+        },
+        pathRewrite(uri) {
+          return uri.replace('/dev-prefix', '/');
+        },
+        changeOrigin: true,
+        onProxyRes(proxyRes) {
+          if (!isProd) {
+            /* eslint no-underscore-dangle: 0 */
+            proxyRes.headers.target =
+              proxyRes.client._host + proxyRes.client.parser.outgoing.path;
+          }
+        },
+      },
       api: {
-        target: 'http://wfc2017-api.weddingee.com',
+        // 注意是否是 https
+        target: 'https://wfc2017-api.weddingee.com',
         filter(pathname) {
           const isApi = pathname.indexOf('/dev-prefix/api') === 0;
           return isApi;
@@ -43,7 +63,7 @@ module.exports = {
         pathRewrite(uri) {
           return uri.replace('/dev-prefix', '/');
         },
-        changeOrigin: true,
+        // changeOrigin: true,
         onProxyRes(proxyRes) {
           if (!isProd) {
             /* eslint no-underscore-dangle: 0 */

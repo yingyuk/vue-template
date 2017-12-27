@@ -42,9 +42,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     // 定义变量
     new webpack.DefinePlugin({
       'process.env': config.build.env,
-      DEBUG: config.build.debug,
       SERVICE_WORKER: config.build.serviceWorker,
-      IS_SERVER: false,
     }),
     new ExtractTextPlugin({
       filename: utils.assetsPath('css/[name].[contenthash].css'),
@@ -147,7 +145,7 @@ if (config.build.serviceWorker) {
 
   webpackConfig.plugins.push(
     new SWPrecachePlugin({
-      cacheId: 'vue-template',
+      cacheId: 'licheng-h5-shop-2017-12-26',
       filename: 'service-worker.js',
       minify: true,
       // dontCacheBustUrlsMatching: /\.\w{8}\./,

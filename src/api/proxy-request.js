@@ -2,6 +2,8 @@ import request from 'src/api/index';
 import errorHandler from 'src/api/error-handler.js';
 import { getUser } from 'src/assets/scripts/local-storage.js';
 
+const notServer = process.env.VUE_ENV !== 'server';
+
 function validateParam(options) {
   const isObject = typeof options === 'object';
   if (!isObject) {
@@ -23,7 +25,7 @@ export default (
   validateParam(options);
   return new Promise(async (resolve, reject) => {
     try {
-      loading && Indicator.open(); // loading
+      loading && notServer && Indicator.open(); // loading
       const { token } = getUser();
       options.headers = options.headers || {};
       options.headers.Authorization = `Bearer${token ? ` ${token}` : ''}`; // iOS9 有空格的 bug
@@ -37,7 +39,7 @@ export default (
       // eslint-disable-next-line
       return reject({ response, alert, message });
     } finally {
-      loading && Indicator.close(); // close loading
+      loading && notServer && Indicator.close(); // close loading
     }
   });
 };

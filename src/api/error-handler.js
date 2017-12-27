@@ -3,6 +3,8 @@
 
 import { wechatLogin } from 'src/assets/scripts/wechat-login';
 
+const notServer = process.env.VUE_ENV !== 'server';
+
 function serverError(response) {
   const isServerError = response && response.status && response.status !== 200;
   if (isServerError) {
@@ -59,9 +61,9 @@ function codeError(response) {
 
 function errorHandler({ message, type }, { alertInfoError, alertServerError }) {
   const ret = { message, alert: null };
-  if (type === 'server' && alertServerError) {
+  if (type === 'server' && notServer && alertServerError) {
     ret.alert = MessageBox(message);
-  } else if (type === 'info' && alertInfoError) {
+  } else if (type === 'info' && notServer && alertInfoError) {
     ret.alert = MessageBox(message);
   }
   console.error(message);

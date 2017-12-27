@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  // baseURL: '',
+  baseURL: '/dev-prefix',
 });
 
 export default instance;

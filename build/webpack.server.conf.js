@@ -24,10 +24,9 @@ const webpackConfig = merge(baseWebpackConfig, {
   externals: Object.keys(require('../package.json').dependencies),
   plugins: [
     new webpack.DefinePlugin({
-      'process.env': config.build.env,
-      'process.env.VUE_ENV': '"server"',
-      IS_SERVER: true,
-      DEBUG: false,
+      'process.env': Object.assign(config.build.env, {
+        VUE_ENV: '"server"',
+      }),
     }),
     new VueSSRPlugin(),
   ],

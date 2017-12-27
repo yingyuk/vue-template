@@ -8,10 +8,13 @@
           <hr>
           <router-link :to="{name: 'detail'}">跳转详情页</router-link>
           <hr>
-          <div contenteditable="true" @input="inputHandler" v-text="userInput"></div>
-          <input v-model="userInput" type="text">
           <my-video ref="myVideo" :playing.sync="videoPlaying" />
           <button @click="playVideo">播放视频</button>
+          <div class="javascript-list">
+            <div v-for="(item, index) in list">
+              <h3>{{item.name}}</h3>
+              &nbsp;&nbsp;&nbsp;&nbsp;star: {{item.stargazers_count}}</div>
+          </div>
         </div>
         <div class="swiper-slide" data-hash="page2">Slide 2</div>
         <div class="swiper-slide" data-hash="page3">Slide 3</div>
@@ -23,29 +26,38 @@
 import myVideo from 'src/components/my-video/my-video';
 import 'swiper/dist/css/swiper.min.css';
 import Swiper from 'swiper';
+import { mapState } from 'vuex';
 
 export default {
   name: 'home',
   data() {
     return {
-      userInput: '双击修改数据',
       mySwiper: null,
       pageIndex: 0,
       // 视频播放状态
       videoPlaying: false,
     };
   },
-  asyncData(/* { route, store } */) {
-    return Promise.resolve();
+  computed: {
+    ...mapState({
+      list: state => state.home.list,
+    }),
+  },
+  watch: {
+    list() {
+      this.$nextTick(() => {
+        this.$refs.scroll && this.$refs.scroll.update();
+      });
+    },
+  },
+  asyncData({ store }) {
+    return store.dispatch('home/fetchList', { isFirstFetch: true });
   },
   title() {
     // 调用的时候绑定了 this
-    return this.user ? this.user.id : '这是首页';
+    return '这是首页';
   },
   methods: {
-    inputHandler(e) {
-      this.userInput = e.target.innerText;
-    },
     rebuildSwiper() {
       this.mySwiper && this.mySwiper.destroy(false);
       this.buildSwiper();
@@ -86,13 +98,13 @@ export default {
     playVideo() {
       this.$refs.myVideo && this.$refs.myVideo.play();
     },
+    initHome() {
+      this.updateSwiper();
+      this.$store.dispatch('home/fetchList', { isFirstFetch: true });
+    },
   },
   mounted() {
-    this.updateSwiper();
-    // this.fetch({
-    //   method: 'GET',
-    //   url: '/search/repositories?q=javascript&sort=stars',
-    // });
+    this.initHome();
   },
   components: {
     myVideo,

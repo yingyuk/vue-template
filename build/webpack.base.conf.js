@@ -62,12 +62,27 @@ module.exports = {
         test: /\.js$/,
         loader: 'babel-loader',
         include: [resolve('src'), resolve('test')],
+        exclude: path.join(__dirname, '../', 'src/assets/scriptloaderassets'),
+      },
+      {
+        test: /\.js$/,
+        loader: 'script-loader',
+        include: path.join(__dirname, '../', 'src/assets/scriptloaderassets'),
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
+        exclude: path.join(__dirname, '../', 'src/assets/fileloaderassets'),
         options: {
           limit: 10000,
+          name: utils.assetsPath('img/[name].[hash:7].[ext]'),
+        },
+      },
+      {
+        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+        loader: 'file-loader',
+        include: path.join(__dirname, '../', 'src/assets/fileloaderassets'),
+        options: {
           name: utils.assetsPath('img/[name].[hash:7].[ext]'),
         },
       },

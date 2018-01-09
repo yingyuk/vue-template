@@ -8,6 +8,9 @@
           <hr>
           <router-link :to="{name: 'detail'}">跳转详情页</router-link>
           <hr>
+          <h2>这是file-loader</h2>
+          <img :src="fileLoaderSample">
+          <hr>
           <my-video ref="myVideo" :playing.sync="videoPlaying" />
           <button @click="playVideo">播放视频</button>
           <div class="javascript-list">
@@ -26,6 +29,7 @@
 import myVideo from 'src/components/my-video/my-video';
 import 'swiper/dist/css/swiper.min.css';
 import Swiper from 'swiper';
+import 'src/assets/scriptloaderassets/hb.modernizr.pack.min.1.0.0.js';
 import { mapState } from 'vuex';
 
 export default {
@@ -36,6 +40,7 @@ export default {
       pageIndex: 0,
       // 视频播放状态
       videoPlaying: false,
+      fileLoaderSample: require('src/assets/fileloaderassets/share.png'),
     };
   },
   computed: {

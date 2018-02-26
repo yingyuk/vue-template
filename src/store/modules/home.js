@@ -1,10 +1,4 @@
-import axios from 'axios';
-
-const notServer = process.env.VUE_ENV !== 'server';
-
-const request = axios.create({
-  baseURL: notServer ? '/dev-prefix' : 'http://127.0.0.1:9237/dev-prefix',
-});
+import request from 'src/api/proxy-request';
 
 // 初始状态
 const state = {

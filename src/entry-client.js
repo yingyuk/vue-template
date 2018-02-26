@@ -20,9 +20,13 @@ router.onReady(() => {
   app.$mount('#app');
 });
 
+const isLocal =
+  window.location.hostname === 'localhost' ||
+  window.location.hostname === '127.0.0.1';
+
 const serviceWorkerRegister =
   SERVICE_WORKER &&
-  window.location.protocol === 'https:' &&
+  (window.location.protocol === 'https:' || isLocal) &&
   'serviceWorker' in navigator;
 if (serviceWorkerRegister) {
   navigator.serviceWorker.register('/service-worker.js');

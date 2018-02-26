@@ -42,7 +42,7 @@ module.exports = {
           return isApi;
         },
         pathRewrite(uri) {
-          return uri.replace('/dev-prefix', '/');
+          return uri.replace('/dev-prefix', '');
         },
         changeOrigin: true,
         onProxyRes(proxyRes) {
@@ -61,9 +61,9 @@ module.exports = {
           return isApi;
         },
         pathRewrite(uri) {
-          return uri.replace('/dev-prefix', '/');
+          return uri.replace('/dev-prefix', '');
         },
-        // changeOrigin: true,
+        changeOrigin: true,
         onProxyRes(proxyRes) {
           if (!isProd) {
             /* eslint no-underscore-dangle: 0 */

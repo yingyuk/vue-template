@@ -13,7 +13,7 @@
     "build:client": "npm run location  cross-env target=client node build/build.js ",
     "build:server": "cross-env target=server node build/build.js ",
     "precommit": "lint-staged",
-    "lint": "eslint --fix --ext .js,.vue --ignore-path .eslintignore .",
+    "lint": "eslint --fix --ext .js,.vue --ignore-path .eslintignore ",
     "cz": "git-cz"
   },
   "dependencies": {
@@ -78,6 +78,7 @@
     "serve-favicon": "^2.4.5",
     "serviceworker-webpack-plugin": "^0.2.3",
     "shelljs": "^0.7.8",
+    "style-loader": "^0.20.1",
     "sw-precache-webpack-plugin": "^0.11.4",
     "uglifyjs-webpack-plugin": "^1.0.1",
     "url-loader": "^0.6.2",

@@ -84,5 +84,6 @@ module.exports = {
       },
     ],
     'function-paren-newline': OFF,
+    'import/prefer-default-export': OFF,
   },
 };

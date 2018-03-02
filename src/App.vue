@@ -6,12 +6,16 @@
   </div>
 </template>
 <script>
-import rem from './assets/scripts/rem';
+import rem from 'src/assets/scripts/rem';
+import jsBridge from 'src/assets/scripts/jsBridge';
 
 export default {
   name: 'app',
   beforeMount() {
     rem();
+  },
+  beforeCreate() {
+    jsBridge();
   },
 };
 </script>

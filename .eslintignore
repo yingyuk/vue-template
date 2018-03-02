@@ -3,3 +3,5 @@ sdk/
 static/
 node_modules/
 src/assets/scriptloaderassets/
+
+.eslintrc.js

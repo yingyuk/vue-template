@@ -1,0 +1,33 @@
+$hd: 1px; // 基本单位
+
+// 文字色
+$color-text-base: #000; // 基本
+$color-text-paragraph: #333; // 段落
+$color-text-caption: #999; // 辅助描述
+
+// 背景色
+$fill-base: #fff; // 组件默认背景
+$fill-disabled: #ddd; // 通用失效背景
+$fill-mask: rgba(0, 0, 0, 0.4); // 遮罩背景
+
+// 全局/品牌色
+$brand-primary: #fe3e62;
+
+// 边框色
+$border-color-base: #dfdfdf;
+
+// 水平间距
+$h-spacing: 5 * $hd;
+
+// 垂直间距
+$v-spacing: 3 * $hd;
+
+// z-index
+$progress-zindex: 2000;
+$popover-zindex: 1999;
+$toast-zindex: 1999;
+$action-sheet-zindex: 1000; // actonsheet 会放到 popup / modal 中
+$picker-zindex: 1000;
+$popup-zindex: 999;
+$modal-zindex: 999; // modal.alert 应该最大，其他应该较小
+$tabs-pagination-zindex: 999;

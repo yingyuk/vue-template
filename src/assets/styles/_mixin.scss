@@ -1,66 +1,117 @@
-/*线的颜色*/
+@import '~src/assets/styles/themes';
 
-$border: #eee;
-$main: #fe3e62;
-$red: #f23365;
-$gray: #b3b3b3;
-$black: #333333;
-@mixin bg-image($url) {
-  background-image: url($url + "@3x.png");
-  background-size: contain;
+// @include bg-image('./images/test@3x.png');
+// @include bg-image('./images/test@2x.jpg');
+@mixin bg-image($url, $args...) {
   background-position: center;
-  background-repeat: no-repeat;
-  /*  @media (-webkit-min-device-pixel-ratio: 3) {
-    background-image: url($url + "@3x.png");
-  }*/
-}
-
-@mixin bg-jpg($url) {
-  background-image: url($url + "@3x.jpg");
   background-size: contain;
-  background-position: center;
   background-repeat: no-repeat;
-  /*  @media (-webkit-min-device-pixel-ratio: 3) {
-    background-image: url($url + "@3x.png");
-  }*/
-}
+  content: $args;
 
+  $png: str-index($url, 'x.png');
+  $jpg: str-index($url, 'x.jpg');
+  @if $png or $jpg {
+    @warn '测试';
+  }
+  @if $png {
+    // 删掉 '@3x.png' 或者 '@2x.png' 再根据屏幕设置不同的背景
+    background-image: url('#{str-slice($url, 0, $png - 3)}@2x.png');
+    @media (min-resolution: 3dppx) {
+      background-image: url('#{str-slice($url, 0, $png - 3)}@3x.png');
+    }
+  }
 
-/*ipad 竖屏*/
-
-@mixin ipad() {
-  @media only screen and (device-aspect-ratio: 3/4) and (orientation: portrait) and (min-width: 768px) {
-    @content;
+  @if $jpg {
+    background-image: url('#{str-slice($url, 0, $jpg - 3)}@2x.jpg');
+    @media (min-resolution: 3dppx) {
+      background-image: url('#{str-slice($url, 0, $jpg - 3)}@3x.jpg');
+    }
   }
 }
 
-@mixin center {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+// @include hairline('bottom', '#dfdfdf', 0);
+@mixin hairline($direction: all, $color: $border-color-base, $radius: 0) {
+  @if $direction == all {
+    border: 1px solid $color;
+  } @else {
+    border-#{$direction}: 1px solid $color;
+  }
+
+  html:not([data-scale]) & {
+    @media (min-resolution: 2dppx) {
+      @if $direction == all {
+        border: unset;
+
+        &::before {
+          position: absolute;
+          top: 0;
+          left: 0;
+          z-index: 1;
+          display: block;
+          box-sizing: border-box;
+          width: 200%;
+          height: 200%;
+          border: 1px solid $color;
+          border-radius: $radius * 2;
+          content: '';
+          transform: scale(0.5);
+          transform-origin: 0 0;
+          pointer-events: none;
+        }
+      } @else {
+        border-#{$direction}: unset;
+
+        &::before {
+          position: absolute;
+          z-index: 1;
+          display: block;
+          background-color: $color;
+          content: '';
+          transform-origin: 50% 50%;
+
+          #{$direction}: 0;
+        }
+        &::before {
+          @if $direction == top or $direction == bottom {
+            left: 0;
+            width: 100%;
+            height: 1px;
+            transform: scaleY(0.5);
+
+            @media (min-resolution: 3dppx) {
+              transform: scaleY(0.33);
+            }
+          } @else if $direction == right or $direction == left {
+            top: 0;
+            width: 1px;
+            height: 100%;
+            transform: scaleX(0.5);
+
+            @media (min-resolution: 3dppx) {
+              transform: scaleX(0.33);
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
-
-
-@mixin hbPlaceholder(){
-  &::-webkit-input-placeholder { /* WebKit browsers */
-    @content;
+@mixin ellipsis {
+  overflow: hidden;
+  min-width: 0; // flex: 1
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: normal;
+}
+@mixin clearfix {
+  zoom: 1;
+  &:after {
+    display: block;
+    visibility: hidden;
+    clear: both;
+    overflow: hidden;
+    height: 0;
+    content: '.';
   }
-  &:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-    @content;
-  }
-  &::-moz-placeholder { /* Mozilla Firefox 19+ */
-    @content;
-  }
-  &:-ms-input-placeholder { /* Internet Explorer 10+ */
-    @content;
-  }
-  //@at-root{
-  //  .ie8,.ie9{
-  //    .placeholder { /* Internet Explorer 9- */
-  //      @content;
-  //    }
-  //  }
-  //}
 }

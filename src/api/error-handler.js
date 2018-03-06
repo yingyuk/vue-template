@@ -11,7 +11,7 @@ function serverError(response) {
     const { status } = response;
     const codeStrategy = {
       400: '错误的请求!',
-      401: '未授权!',
+      401: '登录信息失效!',
       403: '禁止访问!',
       404: '没有找到服务!',
       405: '错误的请求方法!',
@@ -25,7 +25,7 @@ function serverError(response) {
       503: '服务器暂停服务!',
       504: '连接超时!',
     };
-    const message = codeStrategy[status] || '服务器错误!';
+    const message = codeStrategy[status] || `${status} 错误`;
     if (status === 401) {
       // goLogin(); // APP 重新登录
       wechatLogin(); // 微信授权

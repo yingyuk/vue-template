@@ -57,11 +57,14 @@ export async function fetchWechatToken({ wechat_code: wechatCode }) {
 }
 
 export function wechatLogin(force, route) {
-  if (force) {
-    // 强制重新登录
-    setUser('');
-  }
   return new Promise((resolve, reject) => {
+    if (!isWechat) {
+      return reject(new Error('非微信浏览器'));
+    }
+    if (force) {
+      // 强制重新登录
+      setUser('');
+    }
     if (isLogined()) {
       return resolve();
     }

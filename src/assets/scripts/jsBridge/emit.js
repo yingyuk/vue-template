@@ -30,7 +30,10 @@ export function settingHeader(
       return;
     }
     if (!data.backgroundColor) {
-      data.backgroundColor = '#ffffff';
+      data.backgroundColor = '#ffffff'; // 白底
+    }
+    if (!data.isWhite) {
+      data.isWhite = '0'; // 黑字 [ 0: 黑, 1: 白]
     }
     callHandler(
       'commonAction',
@@ -41,6 +44,25 @@ export function settingHeader(
       (...args) => {
         typeof callback === 'function' && callback.call(null, ...args);
         resolve(...args);
+      }
+    );
+  });
+}
+
+// 登录失效
+// Cookies.get('token'); 失效
+export function goLogin(data = {}, callback) {
+  return new Promise(resolve => {
+    // 让 APP 重新登录, 跳转登录页面
+    callHandler(
+      'commonAction',
+      {
+        action: 'goLogin',
+        data,
+      },
+      (...args) => {
+        resolve(...args);
+        typeof callback === 'function' && callback.call(null, ...args);
       }
     );
   });

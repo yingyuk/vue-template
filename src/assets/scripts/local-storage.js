@@ -1,6 +1,8 @@
 import store from 'store';
 import expirePlugin from 'store/plugins/expire';
 
+// const isDev = process.env.NODE_ENV === 'development';
+
 store.addPlugin(expirePlugin);
 
 // 用户标识
@@ -9,24 +11,34 @@ const USERNAME = 'vue_template_user';
 // log 日志
 const LOGNAME = 'vue_template_log';
 
+const is15Day = 1000 * 60 * 60 * 24 * 15;
+
 // ##########
 // 获取用户信息
+/**
+ * return Object
+ */
 export function getUser() {
-  const user = store.get(USERNAME);
-  return user || {};
+  // if (isDev) {
+  //   console.warn('开发环境下, 注意这个登录 token 也会过期');
+  //   return 'xxx';
+  // }
+  return store.get(USERNAME) || {};
 }
 
 // 保存用户信息
-export function setUser(user, expiration) {
+export function setUser(user, expiration = +new Date() + is15Day) {
   store.set(USERNAME, user, expiration);
 }
 // 清除用户信息
 export function clearUser() {
   setUser('');
 }
+
 // 用户已经登陆
 export function isLogined() {
-  return Boolean(getUser() && getUser().token);
+  const user = getUser();
+  return Boolean(user && user.token);
 }
 
 // ###########

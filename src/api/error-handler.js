@@ -1,7 +1,7 @@
 // import MessageBox from 'mint-ui/lib/message-box';
 // import 'mint-ui/lib/message-box/style.css';
-
 import { wechatLogin } from 'src/assets/scripts/wechat-login';
+// import { goLogin } from 'src/assets/scripts/jsBridge/emit';
 
 const notServer = process.env.VUE_ENV !== 'server';
 
@@ -27,6 +27,7 @@ function serverError(response) {
     };
     const message = codeStrategy[status] || '服务器错误!';
     if (status === 401) {
+      // goLogin(); // APP 重新登录
       wechatLogin(); // 微信授权
     }
     const error = new Error(message);
@@ -76,7 +77,7 @@ function errorHandler({ message, type }, { alertInfoError, alertServerError }) {
  */
 export default (response, { alertInfoError, alertServerError }) =>
   Promise.resolve(response)
-    .then(infoError)
     .then(serverError)
+    .then(infoError)
     .then(codeError)
     .catch(data => errorHandler(data, { alertInfoError, alertServerError }));

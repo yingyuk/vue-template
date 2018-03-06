@@ -1,3 +1,4 @@
+import eventBus from 'src/event';
 
 import * as handlersObj from 'src/assets/scripts/jsBridge/handler';
 
@@ -21,6 +22,8 @@ function connectBridge(callback) {
 }
 
 const connectSuccess = bridge => {
+  // APP 成功注入 变量, 广播该事情, 用于执行注入变量前 一些待执行的任务
+  eventBus.$emit('JSBridgeConnectSuccess');
   // 初始化, 告诉 APP 连接成功
   bridge.init((message, responseCallback) => {
     const data = {

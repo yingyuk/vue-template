@@ -1,4 +1,5 @@
 const OFF = 0;
+const WARNING = 1;
 const ERROR = 2;
 
 module.exports = {
@@ -83,7 +84,8 @@ module.exports = {
         functions: 'ignore',
       },
     ],
-    'function-paren-newline': OFF,
-    'import/prefer-default-export': OFF,
+    'function-paren-newline': WARNING,
+    'import/prefer-default-export': WARNING,
+    camelcase: WARNING,
   },
 };

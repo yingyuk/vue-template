@@ -5,10 +5,11 @@
   "author": "yingyuk <wuyingyucn@gmail.com>",
   "private": true,
   "scripts": {
-    "dev": "node build/dev-server.js",
-    "start": "node server.js",
+    "bootstrap": "yarn || npm i",
+    "dev": "npm run bootstrap && node build/dev-server.js",
+    "start": "npm run bootstrap && node server.js",
     "location": "cross-env LOCATION=\"$(git rev-parse --show-toplevel)\" ",
-    "build": "npm run build:client && npm run build:server",
+    "build": "npm run bootstrap && npm run build:client && npm run build:server",
     "build:vendor": "cross-env target=vendor node build/build.js ",
     "build:client": "npm run location  cross-env target=client node build/build.js ",
     "build:server": "cross-env target=server node build/build.js ",
@@ -103,9 +104,6 @@
     }
   },
   "lint-staged": {
-    "*.{js,vue}": [
-      "npm run lint",
-      "git add"
-    ]
+    "*.{js,vue}": ["npm run lint", "git add"]
   }
 }

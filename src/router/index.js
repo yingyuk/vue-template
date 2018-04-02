@@ -1,20 +1,13 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import {
-  wechatLogin,
-  fetchWechatToken,
-  deleteUrlWechatCode,
-} from 'src/assets/scripts/wechat-login';
 import store from 'src/store/index'; // vuex
 import { saveLog } from 'src/assets/scripts/local-storage';
+import analytics from 'src/router/analytics';
+
+import routes from 'src/router/routes';
 
 Vue.use(Router);
-
-const home = () => import('src/views/home/home.vue');
-const detail = () => import('src/views/detail/detail.vue');
-const log = () => import('src/views/log/log.vue');
-const error404 = () => import('src/views/error/404.vue');
 
 const router = new Router({
   mode: 'history', // ['history', 'hash']
@@ -26,64 +19,28 @@ const router = new Router({
     }
     return { x: 0, y: 0 };
   },
-  routes: [
-    {
-      path: '/home',
-      name: 'home',
-      component: home,
-      meta: {},
-    },
-    {
-      path: '/detail',
-      name: 'detail',
-      component: detail,
-      meta: {
-        requireWechatLogin: true,
-      },
-    },
-    {
-      path: '/log',
-      name: 'log',
-      component: log,
-    },
-    {
-      path: '/404',
-      name: 'error404',
-      component: error404,
-    },
-    {
-      path: '*',
-      redirect: {
-        name: 'home',
-      },
-    },
-  ],
+  routes,
 });
 
 router.beforeEach(async (to, from, next) => {
-  const { query, meta } = to;
-  // 微信登录
-  const { wechat_code: wechatCode } = query;
-  if (wechatCode) {
-    // 刚从微信授权跳转过来
-    await fetchWechatToken({ wechat_code: wechatCode });
-    deleteUrlWechatCode(to);
-    return;
+  const { name, meta } = to;
+  const { requireLogin } = meta;
+  if (name === 'login') {
+    return next();
   }
-  const { requireWechatLogin } = meta;
-  if (requireWechatLogin) {
-    const forceLogin = false;
-    await wechatLogin(forceLogin, to);
+  const needLogin = requireLogin && !store.getters.user.isLogin;
+  if (needLogin) {
+    return next({
+      name: 'login',
+      params: { to },
+    });
   }
-  next();
+  return next();
 });
 
 router.afterEach(route => {
-  const { name, params, query, hash } = route;
-  const { href } = router.resolve({ name, params, query, hash });
-  if (typeof _hmt !== 'undefined') {
-    _hmt.push(['_trackPageview', href]); // 百度统计
-  }
+  const { name } = route;
+  analytics(route); // 页面统计
   saveLog(`进入${name}页面`);
   store.commit('closeModal'); // 切换路由, 关闭弹窗
 });

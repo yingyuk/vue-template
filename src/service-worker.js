@@ -24,6 +24,7 @@ self.addEventListener('install', event => {
       .open(CACHE_NAME)
       .then(cache => cache.addAll(assetsToCache))
       .then(() => {
+        self.skipWaiting();
         if (DEBUG) {
           console.info('Cached assets: main', assetsToCache);
         }

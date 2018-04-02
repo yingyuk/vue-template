@@ -87,5 +87,6 @@ module.exports = {
     'function-paren-newline': WARNING,
     'import/prefer-default-export': WARNING,
     camelcase: WARNING,
+    'max-len': ['error', { code: 120 }],
   },
 };

@@ -17,7 +17,7 @@ const webpackConfig = merge(baseWebpackConfig, {
   },
   resolve: {
     alias: {
-      'create-api': path.resolve(__dirname, '../src/api/create-api-server.js'),
+      'create-api': path.resolve(__dirname, '../src/http/serverHttp.js'),
     },
   },
   // 所有包从node_modules里读取

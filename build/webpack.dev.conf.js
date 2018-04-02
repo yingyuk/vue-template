@@ -10,9 +10,7 @@ const path = require('path');
 
 // add hot-reload related code to entry chunks
 Object.keys(baseWebpackConfig.entry).forEach(name => {
-  baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(
-    baseWebpackConfig.entry[name]
-  );
+  baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name]);
 });
 
 module.exports = merge(baseWebpackConfig, {
@@ -20,7 +18,7 @@ module.exports = merge(baseWebpackConfig, {
   devtool: '#cheap-module-eval-source-map',
   resolve: {
     alias: {
-      'create-api': path.resolve(__dirname, '../src/api/create-api-dev.js'),
+      'create-api': path.resolve(__dirname, '../src/http/devHttp.js'),
     },
   },
   plugins: [

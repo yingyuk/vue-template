@@ -18,9 +18,7 @@ module.exports = {
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
-    publicPath: isProd
-      ? config.build.assetsPublicPath
-      : config.dev.assetsPublicPath,
+    publicPath: isProd ? config.build.assetsPublicPath : config.dev.assetsPublicPath,
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
@@ -29,7 +27,7 @@ module.exports = {
       vue: isProd ? 'vue/dist/vue.min.js' : 'vue/dist/vue.js',
       src: resolve('src'),
       node_modules: resolve('node_modules'),
-      'create-api': path.resolve(__dirname, '../src/api/create-api-dev.js'),
+      'create-api': path.resolve(__dirname, '../src/http/devHttp.js'),
     },
   },
   module: {

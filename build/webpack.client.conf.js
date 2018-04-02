@@ -25,7 +25,7 @@ const webpackConfig = merge(baseWebpackConfig, {
   },
   resolve: {
     alias: {
-      'create-api': path.resolve(__dirname, '../src/api/create-api-client.js'),
+      'create-api': path.resolve(__dirname, '../src/http/clientHttp.js'),
     },
   },
   // 不打包以下模块
@@ -142,29 +142,38 @@ const webpackConfig = merge(baseWebpackConfig, {
 
 if (config.build.serviceWorker) {
   const SWPrecachePlugin = require('sw-precache-webpack-plugin');
-
-  webpackConfig.plugins.push(
-    new SWPrecachePlugin({
-      cacheId: 'licheng-h5-shop-2017-12-26',
-      filename: 'service-worker.js',
-      minify: true,
-      // dontCacheBustUrlsMatching: /\.\w{8}\./,
-      dontCacheBustUrlsMatching: /./,
-      // navigateFallback: `${PUBLIC_PATH}index.html`,
-      // mergeStaticsConfig: true,
-      staticFileGlobsIgnorePatterns: [/\.map$/, /\.json$/],
-      runtimeCaching: [
-        {
-          urlPattern: '/',
-          handler: 'networkFirst',
-        },
-        {
-          urlPattern: /\/(home|detail)/,
-          handler: 'networkFirst',
-        },
-      ],
-    })
-  );
+  const { npm_package_name: name, npm_package_version: version } = process.env;
+  const cacheId = `${name}/${version}`;
+  webpackConfig.plugins.push(new SWPrecachePlugin({
+    cacheId,
+    filename: 'service-worker.js',
+    minify: true,
+    // dontCacheBustUrlsMatching: /\.\w{8}\./,
+    dontCacheBustUrlsMatching: /./,
+    // navigateFallback: `${PUBLIC_PATH}index.html`,
+    navigateFallback: '/',
+    // mergeStaticsConfig: true,
+    staticFileGlobsIgnorePatterns: [/\.map$/, /\.json$/],
+    directoryIndex: '/log',
+    runtimeCaching: [
+      {
+        urlPattern: '/',
+        handler: 'networkFirst',
+      },
+      {
+        urlPattern: /\/(detail)/,
+        handler: 'networkFirst',
+      },
+      // {
+      //   urlPattern: /^https:\/\/cdn\.bootcss\.com\//,
+      //   handler: 'cacheFirst',
+      // },
+      // {
+      //   urlPattern: /^https:\/\/licheng-cdn\.halobear\.com\//,
+      //   handler: 'cacheFirst',
+      // },
+    ],
+  }));
 
   // ...
 

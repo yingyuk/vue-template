@@ -1,4 +1,4 @@
-import request from 'src/api/proxy-request';
+import request from 'src/http/index';
 
 // 初始状态
 const state = {

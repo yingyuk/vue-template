@@ -1,6 +1,6 @@
 import { setUser, isLogined } from 'src/assets/scripts/local-storage';
 import { isiOS, isWechat } from 'src/assets/scripts/util';
-import proxyRequest from 'src/api/proxy-request';
+import request from 'src/http/index';
 import router from 'src/router';
 
 function wechatRedirect(route) {
@@ -32,7 +32,7 @@ export function deleteUrlWechatCode(route) {
 }
 
 export async function fetchWechatToken({ wechat_code: wechatCode }) {
-  const { data: { token } } = await proxyRequest({
+  const { data: { token } } = await request({
     url: '/api/authorization',
     method: 'POST',
     data: {

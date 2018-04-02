@@ -1,4 +1,4 @@
-import proxyRequest from 'src/api/proxy-request.js';
+import request from 'src/http/index';
 
 export default {
   methods: {
@@ -9,6 +9,6 @@ export default {
      * @param  {Boolean} alertError 是否弹出捕获的错误
      * @return {Promise}            resolve(res); res 是 http 请求的结果
      */
-    fetch: proxyRequest,
+    $http: request,
   },
 };

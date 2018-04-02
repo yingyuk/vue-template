@@ -1,4 +1,8 @@
-import instance from 'create-api';
+import axios from 'axios';
+
+const instance = axios.create({
+  baseURL: '/dev-prefix',
+});
 
 instance.interceptors.response.use(
   response => {

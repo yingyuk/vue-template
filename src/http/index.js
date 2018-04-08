@@ -1,3 +1,4 @@
+import { Indicator } from 'mint-ui';
 import request from 'create-api';
 import errorParse from 'src/http/errorParse';
 import { getUser } from 'src/assets/scripts/local-storage.js';

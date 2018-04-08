@@ -1,7 +1,5 @@
 import eventBus from 'src/event';
 
-const isDev = process.env.NODE_ENV === 'development';
-
 function callHandler(funcName, data = {}, callback = () => {}) {
   if (!funcName) {
     console.error('请输入 JSBridge 调取的方法名');
@@ -91,24 +89,13 @@ export function getLocation(data = {}) {
         } else if (isObj) {
           coordsObj = coordsStr;
         }
-        const {
-          lat,
-          latitude,
-          lng,
-          longitude,
-          region_code,
-          regionCode,
-          adCode,
-        } = coordsObj;
+        const { lat, latitude, lng, longitude, region_code, regionCode, adCode } = coordsObj;
         const coords = {
           latitude: lat || latitude,
           longitude: lng || longitude,
           region_code: region_code || regionCode || adCode,
         };
 
-        if (isDev) {
-          MessageBox.alert(coords);
-        }
         resolve(coords);
       }
     );

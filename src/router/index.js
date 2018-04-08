@@ -42,7 +42,6 @@ router.afterEach(route => {
   const { name } = route;
   analytics(route); // 页面统计
   saveLog(`进入${name}页面`);
-  store.commit('closeModal'); // 切换路由, 关闭弹窗
 });
 
 export default router;

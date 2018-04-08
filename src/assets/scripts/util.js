@@ -1,4 +1,3 @@
-/* global window */
 /* eslint-disable no-restricted-syntax */
 
 function padLeftZero(str) {
@@ -15,10 +14,7 @@ export function formatDate(date, format) {
   }
   if (/(y+)/.test(reply)) {
     // 年份替换
-    reply = reply.replace(
-      RegExp.$1,
-      `${date.getFullYear()}`.substr(4 - RegExp.$1.length)
-    );
+    reply = reply.replace(RegExp.$1, `${date.getFullYear()}`.substr(4 - RegExp.$1.length));
   }
   // 定义 时间替换 格式
   const obj = {

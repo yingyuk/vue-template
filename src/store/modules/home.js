@@ -1,4 +1,5 @@
-import request from 'src/http/index';
+// import request from 'src/http/index';
+import axios from 'axios';
 
 // 初始状态
 const state = {
@@ -24,8 +25,8 @@ const actions = {
         return;
       }
       commit('setLoading', true);
-      const { data: { items, total_count: total } } = await request({
-        url: '/search/repositories',
+      const { data: { items, total_count: total } } = await axios({
+        url: 'https://api.github.com/search/repositories',
         params: {
           q: 'javascript',
           sort: 'stars',

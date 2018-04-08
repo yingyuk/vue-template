@@ -1,6 +1,6 @@
 <template>
   <article id="home">
-    <router-link :to="{name: 'log'}">log 页面</router-link>
+    <router-link :to="{name: 'log'}">前往 log 页面</router-link>
     <div class="javascript-list">
       <h3>javascript github star 排行榜</h3>
       <div v-for="(item, index) in list" :key="index">
@@ -31,12 +31,18 @@ export default {
     return store.dispatch('home/fetchList', { isFirstFetch: true });
   },
   methods: {},
+  mounted() {},
+  components: {},
 };
 </script>
 <style lang="scss" scoped>
 @import '~src/assets/styles/_mixin.scss';
 
 #home {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   @include clearfix;
   .javascript-list {
     @include hairline('top');

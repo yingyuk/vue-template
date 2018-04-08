@@ -11,11 +11,12 @@ import jsBridge from 'src/assets/scripts/jsBridge';
 
 export default {
   name: 'app',
-  beforeMount() {
-    rem();
-  },
   beforeCreate() {
-    jsBridge();
+    const noServer = !this.$isServer;
+    if (noServer) {
+      rem();
+      jsBridge();
+    }
   },
 };
 </script>

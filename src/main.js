@@ -2,7 +2,6 @@ import Vue from 'vue';
 import VueLazyload from 'vue-lazyload';
 import { sync } from 'vuex-router-sync';
 
-import titleMixin from 'src/mixins/title';
 import App from './App.vue';
 import store from './store';
 import router from './router';
@@ -10,6 +9,7 @@ import * as filters from './filters';
 import mixins from './mixins';
 
 Vue.config.productionTip = false;
+Vue.config.devtools = true;
 
 Vue.use(VueLazyload, {
   preLoad: 1.3,
@@ -25,22 +25,6 @@ Object.keys(filters).forEach(key => {
 });
 
 Vue.mixin(mixins);
-Vue.mixin({
-  beforeRouteUpdate(to, from, next) {
-    const { asyncData } = this.$options;
-    if (asyncData) {
-      asyncData({
-        store: this.$store,
-        route: to,
-      })
-        .then(next)
-        .catch(next);
-    } else {
-      next();
-    }
-  },
-});
-Vue.mixin(titleMixin);
 
 const app = new Vue({
   router,
@@ -49,3 +33,7 @@ const app = new Vue({
 });
 
 export { app, router, store };
+
+if (module.hot) {
+  module.hot.accept();
+}

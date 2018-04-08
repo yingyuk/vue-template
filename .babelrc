@@ -1,18 +1,5 @@
 {
-  "presets": [
-    ["env", { "modules": false }],
-    "stage-2"
-  ],
-  "plugins": ["transform-runtime"],
-  "comments": true,
-  "env": {
-    "test": {
-      "presets": ["env", "stage-2"],
-      "plugins": ["istanbul"]
-    }
-  },
-  "ignore": [
-    "jquery.js",
-    "jquery.min.js"
-  ]
+  "presets": [["env", { "modules": false }], "stage-2"],
+  "plugins": ["transform-runtime", ["component", [{ "libraryName": "mint-ui", "style": true }]]],
+  "comments": true
 }

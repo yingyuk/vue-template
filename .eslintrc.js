@@ -1,5 +1,5 @@
 const OFF = 0;
-const WARNING = 1;
+const WARN = 1;
 const ERROR = 2;
 
 module.exports = {
@@ -22,12 +22,7 @@ module.exports = {
     },
   },
   globals: {
-    document: true,
     _hmt: true, // 百度统计
-    IS_SERVER: true, // 是否是服务器渲染环境
-    MessageBox: true,
-    SERVICE_WORKER: true,
-    Indicator: true,
   },
   rules: {
     // 没有找到模块
@@ -50,7 +45,18 @@ module.exports = {
     ],
     'arrow-parens': OFF,
     'linebreak-style': OFF, // 回车风格不报错
-    indent: ['error', 2], // 缩进2个空格
+    // indent: [
+    //   'error',
+    //   2, // 缩进2个空格
+    //   {
+    //     SwitchCase: 1,
+    //     FunctionDeclaration: { body: 1, parameters: 4 },
+    //     flatTernaryExpressions: false,
+    //     ignoredNodes: ['ConditionalExpression'],
+    //     ObjectExpression: 1,
+    //   },
+    // ],
+    indent: WARN,
     'no-unused-expressions': [
       'error',
       {
@@ -84,9 +90,9 @@ module.exports = {
         functions: 'ignore',
       },
     ],
-    'function-paren-newline': WARNING,
-    'import/prefer-default-export': WARNING,
-    camelcase: WARNING,
+    'function-paren-newline': WARN,
+    'import/prefer-default-export': WARN,
+    camelcase: WARN,
     'max-len': ['error', { code: 120 }],
   },
 };

@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import { isWechat } from 'src/assets/scripts/util';
+
 import shareImage from 'src/assets/fileloaderassets/share.png';
 
 const isServer = process.env.VUE_ENV === 'server';
@@ -9,26 +10,26 @@ const isServer = process.env.VUE_ENV === 'server';
 /* import wechatShare from 'src/assets/scripts/wechat-share.js';
 
 beforeMount() {
-  const { origin } = window.location;
-  const { fullPath } = this.$route;
   wechatShare({
-    title: '我的分享标题',
-    link: origin + fullPath,
+    title: '分享标题',
+    imgUrl: 'https://xxxx.png',
+    desc: '分享内容',
+    link: window.location.href,
   });
 } */
 
-const debug = false; // 是否开启调试模式
-const jsApiList = ['onMenuShareAppMessage', 'onMenuShareTimeline']; // 需要使用的JS接口列表, 可修改
+const debug = false;
+const jsApiList = ['onMenuShareAppMessage', 'onMenuShareTimeline'];
 
 const defaultData = {
-  title: '默认分享标题',
-  content: '默认分享内容',
-  link: isServer ? '' : window.location.origin,
-  imgUrl: isServer ? '' : window.location.origin + shareImage,
-  type: 'link',
-  dataUrl: '',
-  success() {},
-  cancel() {},
+  title: '默认分享标题', // 分享标题
+  desc: '默认分享内容', // 分享描述
+  link: isServer ? '' : window.location.origin, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+  imgUrl: isServer ? '' : window.location.origin + shareImage, // 分享图标
+  type: 'link', // 分享类型,music、video 或 link，不填默认为link
+  dataUrl: '', // 如果 type 是 music 或 video，则要提供数据链接，默认为空
+  success() {}, // 用户确认分享后执行的回调函数
+  cancel() {}, // 用户取消分享后执行的回调函数
 };
 
 function loadSDK() {
@@ -82,7 +83,7 @@ async function getWechatConfig() {
 }
 
 // 微信分享
-export default function wechatShare(shareDate = {}) {
+export default function wechatShare(shareDate) {
   return new Promise(async (resolve, reject) => {
     try {
       if (!isWechat) {
@@ -95,7 +96,13 @@ export default function wechatShare(shareDate = {}) {
 
       wx.config(wechatConfig);
 
-      const shareConfig = Object.assign({}, defaultData, shareDate);
+      const shareConfig = Object.assign(
+        {},
+        defaultData,
+        shareDate || {
+          link: window.location.href,
+        }
+      );
 
       const { title, link, imgUrl, success, cancel, desc, type, dataUrl } = shareConfig;
 
@@ -116,7 +123,6 @@ export default function wechatShare(shareDate = {}) {
         success, // 用户确认分享后执行的回调函数
         cancel, // 用户取消分享后执行的回调函数
       };
-
       wx.ready(() => {
         wx.onMenuShareTimeline(timeLineConfig);
         wx.onMenuShareAppMessage(appMsgConfig); // 分享给朋友

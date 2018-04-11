@@ -1,3 +1,4 @@
+/* global _hmt : 0 */
 import router from 'src/router/index';
 
 // 百度统计

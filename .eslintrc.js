@@ -22,7 +22,7 @@ module.exports = {
     },
   },
   globals: {
-    _hmt: true, // 百度统计
+    wx: true,
   },
   rules: {
     // 没有找到模块

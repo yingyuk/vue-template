@@ -29,7 +29,7 @@
   }
 }
 
-// @include hairline('bottom', '#dfdfdf', 0);
+// @include hairline(bottom, #dfdfdf, 0);
 @mixin hairline($direction: all, $color: $border-color-base, $radius: 0) {
   @if $direction == all {
     border: 1px solid $color;
@@ -38,6 +38,7 @@
   }
 
   html:not([data-scale]) & {
+    position: relative;
     @media (min-resolution: 2dppx) {
       @if $direction == all {
         border: unset;
